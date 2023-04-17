@@ -1,0 +1,18 @@
+%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Output_Payload = {
+  paymentOrderProcedureInstanceReference?: String, 
+  paymentOrderProcedureInitiateActionRecord?: { _?: Any } {"description": "`status: Not Mapped`\n core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary\n general-info: The Initiate service call input and output record\n"}, 
+  paymentOrderProcedureInstanceRecord?: {
+    dateType?: {
+      date?: String, 
+      _?: Any
+    }, 
+    paymentMechanismType?: String, 
+    _?: Any
+  }, 
+  paymentOrderProcedureInitiateActionReference?: String, 
+  paymentOrderProcedureInstanceStatus?: String, 
+  _?: Any
+}
+

@@ -1,0 +1,996 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="payment_order_acrtivation_req" format="json">
+      <types:shape format="weave" example="example/payment_order_activation_req.json"><![CDATA[%dw 2.0
+
+type payment_order_acrtivation_req = {|
+  serviceDomainActivationActionTaskRecord: {|  |}, 
+  serviceDomainCenterReference: String, 
+  serviceDomainServiceReference: String, 
+  serviceDomainServiceConfigurationRecord: {|
+    serviceDomainServiceConfigurationSettingReference: String, 
+    serviceDomainServiceConfigurationSettingType: String, 
+    serviceDomainServiceConfigurationSetup: {| serviceDomainServiceConfigurationParameter: String |}
+  |}
+|} {"example": "{\\\"serviceDomainActivationActionTaskRecord\\\":{},\\\"serviceDomainCenterReference\\\":\\\"SCR793499\\\",\\\"serviceDomainServiceReference\\\":\\\"CPASSR703914\\\",\\\"serviceDomainServiceConfigurationRecord\\\":{\\\"serviceDomainServiceConfigurationSettingReference\\\":\\\"700761\\\",\\\"serviceDomainServiceConfigurationSettingType\\\":\\\"string\\\",\\\"serviceDomainServiceConfigurationSetup\\\":{\\\"serviceDomainServiceConfigurationParameter\\\":\\\"string\\\"}}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="payment_order_activation_resp" format="json">
+      <types:shape format="weave" example="example/payment_order_activation_resp.json"><![CDATA[%dw 2.0
+
+type payment_order_activation_resp = {|
+  serviceDomainActivationActionTaskReference: String, 
+  serviceDomainActivationActionTaskRecord: {|  |}, 
+  serviceDomainServicingSessionReference: String, 
+  serviceDomainServicingSessionRecord: {|  |}, 
+  serviceDomainServiceConfigurationRecord: {|
+    serviceDomainServiceConfigurationSettingReference: String, 
+    serviceDomainServiceConfigurationSettingDescription: String, 
+    serviceDomainServiceConfigurationSetup: {| serviceDomainServiceConfigurationParameter: String |}, 
+    serviceDomainServiceSubscription: {|
+      serviceDomainServiceSubscriberReference: String, 
+      serviceDomainServiceSubscriberAccessProfile: String
+    |}, 
+    serviceDomainServiceAgreement: {|
+      serviceDomainServiceAgreementReference: String, 
+      serviceDomainServiceUserReference: String, 
+      serviceDomainServiceAgreementTermsandConditions: String
+    |}, 
+    serviceDomainServiceStatus: String
+  |}, 
+  serviceDomainServicingSessionStatus: String
+|} {"example": "{\\\"serviceDomainActivationActionTaskReference\\\":\\\"SAATR758836\\\",\\\"serviceDomainActivationActionTaskRecord\\\":{},\\\"serviceDomainServicingSessionReference\\\":\\\"SSSR783215\\\",\\\"serviceDomainServicingSessionRecord\\\":{},\\\"serviceDomainServiceConfigurationRecord\\\":{\\\"serviceDomainServiceConfigurationSettingReference\\\":\\\"700761\\\",\\\"serviceDomainServiceConfigurationSettingDescription\\\":\\\"string\\\",\\\"serviceDomainServiceConfigurationSetup\\\":{\\\"serviceDomainServiceConfigurationParameter\\\":\\\"string\\\"},\\\"serviceDomainServiceSubscription\\\":{\\\"serviceDomainServiceSubscriberReference\\\":\\\"769192\\\",\\\"serviceDomainServiceSubscriberAccessProfile\\\":\\\"string\\\"},\\\"serviceDomainServiceAgreement\\\":{\\\"serviceDomainServiceAgreementReference\\\":\\\"791202\\\",\\\"serviceDomainServiceUserReference\\\":\\\"767210\\\",\\\"serviceDomainServiceAgreementTermsandConditions\\\":\\\"string\\\"},\\\"serviceDomainServiceStatus\\\":\\\"string\\\"},\\\"serviceDomainServicingSessionStatus\\\":\\\"string\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="payment_order_initiate_req" format="json">
+      <types:shape format="weave" example="example/payment_order_initiate_req.json"><![CDATA[%dw 2.0
+
+type payment_order_initiate_req = {|
+  paymentOrderServicingSessionReference: String, 
+  paymentOrderProcedureInitiateActionRecord: {|
+    EndToEndIdentification: String, 
+    CurrencyOfTransfer: String, 
+    ExchangeRate: Number {"typeId": "double"}
+  |}, 
+  paymentOrderProcedureInstanceStatus: String, 
+  paymentOrderProcedureInstanceRecord: {|
+    paymentTransactionInitiatorReference: String, 
+    payerReference: String, 
+    payerBankReference: String, 
+    payerProductInstanceReference: String, 
+    payeeReference: String, 
+    payeeBankReference: String, 
+    payeeProductInstanceReference: String, 
+    amount: String, 
+    currency: String, 
+    dateType: {| date: String |}, 
+    paymentMechanismType: String, 
+    paymentInstructions: String, 
+    interestedParties: String, 
+    productType: String, 
+    settlementInstructions: String
+  |}
+|} {"example": "{\\\"paymentOrderServicingSessionReference\\\":\\\"POSSR744360\\\",\\\"paymentOrderProcedureInitiateActionRecord\\\":{\\\"EndToEndIdentification\\\":\\\"PmtTx-4c3abc67-a2c0-41fe-bb76-5444c827958e\\\",\\\"CurrencyOfTransfer\\\":\\\"USD\\\",\\\"ExchangeRate\\\":1.0},\\\"paymentOrderProcedureInstanceStatus\\\":\\\"string\\\",\\\"paymentOrderProcedureInstanceRecord\\\":{\\\"paymentTransactionInitiatorReference\\\":\\\"707294\\\",\\\"payerReference\\\":\\\"767057\\\",\\\"payerBankReference\\\":\\\"751327\\\",\\\"payerProductInstanceReference\\\":\\\"776290\\\",\\\"payeeReference\\\":\\\"746110\\\",\\\"payeeBankReference\\\":\\\"760217\\\",\\\"payeeProductInstanceReference\\\":\\\"706967\\\",\\\"amount\\\":\\\"USD 250\\\",\\\"currency\\\":\\\"USD\\\",\\\"dateType\\\":{\\\"date\\\":\\\"09-22-2018\\\"},\\\"paymentMechanismType\\\":\\\"string\\\",\\\"paymentInstructions\\\":\\\"string\\\",\\\"interestedParties\\\":\\\"string\\\",\\\"productType\\\":\\\"string\\\",\\\"settlementInstructions\\\":\\\"string\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="payment_order_initiate_resp" format="json">
+      <types:shape format="weave" example="example/payment_order_initiate_resp.json"><![CDATA[%dw 2.0
+
+type payment_order_initiate_resp = {|
+  paymentOrderProcedureInstanceReference: String, 
+  paymentOrderProcedureInitiateActionReference: String, 
+  paymentOrderProcedureInitiateActionRecord: {|  |}, 
+  paymentOrderProcedureInstanceStatus: String, 
+  paymentOrderProcedureInstanceRecord: {|
+    dateType: {| date: String |}, 
+    paymentMechanismType: String
+  |}
+|} {"example": "{\\\"paymentOrderProcedureInstanceReference\\\":\\\"POPIR796094\\\",\\\"paymentOrderProcedureInitiateActionReference\\\":\\\"POPIAR748517\\\",\\\"paymentOrderProcedureInitiateActionRecord\\\":{},\\\"paymentOrderProcedureInstanceStatus\\\":\\\"string\\\",\\\"paymentOrderProcedureInstanceRecord\\\":{\\\"dateType\\\":{\\\"date\\\":\\\"09-22-2018\\\"},\\\"paymentMechanismType\\\":\\\"string\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="bank_list" format="json">
+      <types:shape format="weave" example="examples/bank_list_sample.json"><![CDATA[%dw 2.0
+
+type bank_list = Array<{|  BankCode: String,   BankName: String,   CountryHQ: String,   StateHQ: String,   CityHQ: String|}> {"example": "[{\\\"BankCode\\\":\\\"BOFAUS3N\\\",\\\"BankName\\\":\\\"BOA\\\",\\\"CountryHQ\\\":\\\"USA\\\",\\\"StateHQ\\\":\\\"North Carolina\\\",\\\"CityHQ\\\":\\\"Charlotte\\\"},{\\\"BankCode\\\":\\\"CITICATTBCH\\\",\\\"BankName\\\":\\\"CITI\\\",\\\"CountryHQ\\\":\\\"USA\\\",\\\"StateHQ\\\":\\\"New York\\\",\\\"CityHQ\\\":\\\"New York\\\"},{\\\"BankCode\\\":\\\"ROYCCAT2IBO\\\",\\\"BankName\\\":\\\"RBC\\\",\\\"CountryHQ\\\":\\\"Canada\\\",\\\"StateHQ\\\":\\\"Ontario\\\",\\\"CityHQ\\\":\\\"Toronto\\\"},{\\\"BankCode\\\":\\\"CIBCCATTXXX\\\",\\\"BankName\\\":\\\"CIBC\\\",\\\"CountryHQ\\\":\\\"Canada\\\",\\\"StateHQ\\\":\\\"Ontario\\\",\\\"CityHQ\\\":\\\"Toronto\\\"},{\\\"BankCode\\\":\\\"DEUTDEFF\\\",\\\"BankName\\\":\\\"DeutscheBank\\\",\\\"CountryHQ\\\":\\\"Germany\\\",\\\"StateHQ\\\":\\\"Frankurt\\\",\\\"CityHQ\\\":\\\"Frankfurt\\\"},{\\\"BankCode\\\":\\\"HKBCCATT\\\",\\\"BankName\\\":\\\"HSBC\\\",\\\"CountryHQ\\\":\\\"UK\\\",\\\"StateHQ\\\":\\\"London\\\",\\\"CityHQ\\\":\\\"London\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="route_path_req" format="json">
+      <types:shape format="weave" example="examples/PaymentExecPath_IntraBankNat.json"><![CDATA[%dw 2.0
+
+type route_path_req = {|
+  Amount: Number {"typeId": "double"}, 
+  CreditorBank: String, 
+  CreditoBankCountry: String, 
+  CreditorAccountType: String, 
+  CreditorAcountCurrency: String, 
+  DebtorBank: String, 
+  DebtorBankCountry: String, 
+  DebtorAccountType: String, 
+  DebtorAcountCurrency: String, 
+  TransferType: String, 
+  ChannelType: String, 
+  Stage: String
+|} {"example": "{\\\"Amount\\\":333.33,\\\"CreditorBank\\\":\\\"CITIUS33\\\",\\\"CreditoBankCountry\\\":\\\"US\\\",\\\"CreditorAccountType\\\":\\\"SavingsSpecial\\\",\\\"CreditorAcountCurrency\\\":\\\"USD\\\",\\\"DebtorBank\\\":\\\"CITIUS33\\\",\\\"DebtorBankCountry\\\":\\\"US\\\",\\\"DebtorAccountType\\\":\\\"SavingsSpecial\\\",\\\"DebtorAcountCurrency\\\":\\\"USD\\\",\\\"TransferType\\\":\\\"INTERNATIONAL_TRANSFER\\\",\\\"ChannelType\\\":\\\"LOCAL\\\",\\\"Stage\\\":\\\"OB_EXPERIENCE\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="route_path_resp" format="json">
+      <types:shape format="weave" example="examples/PaymentExecPath_Response.json"><![CDATA[%dw 2.0
+
+type route_path_resp = {|
+  PaymentExecutionPath: String, 
+  PaymentExecutionCode: String
+|} {"example": "{\\\"PaymentExecutionPath\\\":\\\"localhost\\/banking\\/route\\\",\\\"PaymentExecutionCode\\\":\\\"INTERNTAIONAL_PMTS\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="payment_execution_req" format="json">
+      <types:shape format="weave" example="example/pf-intrabanknational-execution-papi_initiation_req.json"><![CDATA[%dw 2.0
+
+type payment_execution_req = {|
+  paymentExecutionServicingSessionReference: String, 
+  paymentExecutionProcedureInitiateActionRecord: {|
+    EndToEndIdentification: String, 
+    CurrencyOfTransfer: String, 
+    ExchangeRate: Number {"typeId": "double"}
+  |}, 
+  paymentExecutionProcedureInstanceStatus: String, 
+  paymentExecutionProcedureInstanceRecord: {|
+    paymentTransactionInitiatorReference: String, 
+    paymentOrderReference: String, 
+    payerReference: String, 
+    payerBankReference: String, 
+    payerProductInstanceReference: String, 
+    payeeReference: String, 
+    payeeBankReference: String, 
+    payeeProductInstanceReference: String, 
+    amount: String, 
+    currency: String, 
+    dateType: {| date: String |}, 
+    washAccountReference: String, 
+    intermediaryAccountReference: String, 
+    paymentMechanismType: String
+  |}
+|} {"example": "{\\\"paymentExecutionServicingSessionReference\\\":\\\"PESSR747539\\\",\\\"paymentExecutionProcedureInitiateActionRecord\\\":{\\\"EndToEndIdentification\\\":\\\"PmtTx-4c3abc67-a2c0-41fe-bb76-5444c827958e\\\",\\\"CurrencyOfTransfer\\\":\\\"USD\\\",\\\"ExchangeRate\\\":1.0},\\\"paymentExecutionProcedureInstanceStatus\\\":\\\"string\\\",\\\"paymentExecutionProcedureInstanceRecord\\\":{\\\"paymentTransactionInitiatorReference\\\":\\\"704943\\\",\\\"paymentOrderReference\\\":\\\"781667\\\",\\\"payerReference\\\":\\\"798260\\\",\\\"payerBankReference\\\":\\\"714895\\\",\\\"payerProductInstanceReference\\\":\\\"706539\\\",\\\"payeeReference\\\":\\\"754756\\\",\\\"payeeBankReference\\\":\\\"738119\\\",\\\"payeeProductInstanceReference\\\":\\\"763008\\\",\\\"amount\\\":\\\"USD 250\\\",\\\"currency\\\":\\\"USD\\\",\\\"dateType\\\":{\\\"date\\\":\\\"09-22-2018\\\"},\\\"washAccountReference\\\":\\\"712426\\\",\\\"intermediaryAccountReference\\\":\\\"764973\\\",\\\"paymentMechanismType\\\":\\\"LOCAL\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Input-Payload" format="json">
+      <types:shape format="weave" example="example/payment_order_initiate_req.json" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Input_Payload = {|
+  paymentOrderServicingSessionReference: String, 
+  paymentOrderProcedureInitiateActionRecord: {|
+    EndToEndIdentification: String, 
+    CurrencyOfTransfer: String, 
+    ExchangeRate: Number {"typeId": "double"}
+  |}, 
+  paymentOrderProcedureInstanceStatus: String, 
+  paymentOrderProcedureInstanceRecord: {|
+    paymentTransactionInitiatorReference: String, 
+    payerReference: String, 
+    payerBankReference: String, 
+    payerProductInstanceReference: String, 
+    payeeReference: String, 
+    payeeBankReference: String, 
+    payeeProductInstanceReference: String, 
+    amount: String, 
+    currency: String, 
+    dateType: {| date: String |}, 
+    paymentMechanismType: String, 
+    paymentInstructions: String, 
+    interestedParties: String, 
+    productType: String, 
+    settlementInstructions: String
+  |}
+|} {"example": "{\\\"paymentOrderServicingSessionReference\\\":\\\"POSSR744360\\\",\\\"paymentOrderProcedureInitiateActionRecord\\\":{\\\"EndToEndIdentification\\\":\\\"PmtTx-4c3abc67-a2c0-41fe-bb76-5444c827958e\\\",\\\"CurrencyOfTransfer\\\":\\\"USD\\\",\\\"ExchangeRate\\\":1.0},\\\"paymentOrderProcedureInstanceStatus\\\":\\\"string\\\",\\\"paymentOrderProcedureInstanceRecord\\\":{\\\"paymentTransactionInitiatorReference\\\":\\\"707294\\\",\\\"payerReference\\\":\\\"767057\\\",\\\"payerBankReference\\\":\\\"751327\\\",\\\"payerProductInstanceReference\\\":\\\"776290\\\",\\\"payeeReference\\\":\\\"746110\\\",\\\"payeeBankReference\\\":\\\"760217\\\",\\\"payeeProductInstanceReference\\\":\\\"706967\\\",\\\"amount\\\":\\\"USD 250\\\",\\\"currency\\\":\\\"USD\\\",\\\"dateType\\\":{\\\"date\\\":\\\"09-22-2018\\\"},\\\"paymentMechanismType\\\":\\\"string\\\",\\\"paymentInstructions\\\":\\\"string\\\",\\\"interestedParties\\\":\\\"string\\\",\\\"productType\\\":\\\"string\\\",\\\"settlementInstructions\\\":\\\"string\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Input-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/622774e7-496c-4c61-85ae-2280d2c52c6e/Input-Attributes.wev" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {| "sd-reference-id": String |}, 
+  version: String, 
+  localAddress: String
+|}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Input-Variables-outboundHeaders" format="java">
+      <types:shape format="weave" example="weave/autogenerated/622774e7-496c-4c61-85ae-2280d2c52c6e/Input-Variables-outboundHeaders.wev" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Input_Variables_outboundHeaders = {|  |}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Input-Variables-httpStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Payload" format="json">
+      <types:shape format="weave" example="weave/autogenerated/622774e7-496c-4c61-85ae-2280d2c52c6e/Output-Payload.wev" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Output_Payload = {
+  paymentOrderProcedureInstanceReference?: String, 
+  paymentOrderProcedureInitiateActionRecord?: { _?: Any } {"description": "`status: Not Mapped`\n core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary\n general-info: The Initiate service call input and output record\n"}, 
+  paymentOrderProcedureInstanceRecord?: {
+    dateType?: {
+      date?: String, 
+      _?: Any
+    }, 
+    paymentMechanismType?: String, 
+    _?: Any
+  }, 
+  paymentOrderProcedureInitiateActionReference?: String, 
+  paymentOrderProcedureInstanceStatus?: String, 
+  _?: Any
+}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/622774e7-496c-4c61-85ae-2280d2c52c6e/Output-Attributes.wev" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Output_Attributes = {|
+  statusCode: Number, 
+  reasonPhrase: String, 
+  headers: { _?: String }
+|} {"typeAlias": "HttpResponseAttributes",
+"typeId": "org.mule.extension.http.api.HttpResponseAttributes"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-dest_bank_county" format="java">
+      <types:shape format="weave" example="weave/autogenerated/622774e7-496c-4c61-85ae-2280d2c52c6e/county.wev" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Output_Variables_dest_bank_county = {| banks: Array<{| dest_bank_country: String |}> |}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-InterBankNat" format="java">
+      <types:shape format="raml" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-IntraBankInt" format="java">
+      <types:shape format="raml" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-Remit" format="java">
+      <types:shape format="raml" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-IntraBankNat" format="java">
+      <types:shape format="raml" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-src_bank_country" format="java">
+      <types:shape format="weave" example="weave/autogenerated/622774e7-496c-4c61-85ae-2280d2c52c6e/country.wev" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Output_Variables_src_bank_country = {| banks: Array<{| src_bank_country: String |}> |}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-InterBankInt" format="java">
+      <types:shape format="raml" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-sid" format="java">
+      <types:shape format="weave" example="weave/autogenerated/622774e7-496c-4c61-85ae-2280d2c52c6e/Output-Variables-sid.wev" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Output_Variables_sid = Null
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-original_route_req" format="json">
+      <types:shape format="weave" example="example/payment_order_initiate_req.json" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Output_Variables_original_route_req = {|
+  paymentOrderServicingSessionReference: String, 
+  paymentOrderProcedureInitiateActionRecord: {|
+    EndToEndIdentification: String, 
+    CurrencyOfTransfer: String, 
+    ExchangeRate: Number {"typeId": "double"}
+  |}, 
+  paymentOrderProcedureInstanceStatus: String, 
+  paymentOrderProcedureInstanceRecord: {|
+    paymentTransactionInitiatorReference: String, 
+    payerReference: String, 
+    payerBankReference: String, 
+    payerProductInstanceReference: String, 
+    payeeReference: String, 
+    payeeBankReference: String, 
+    payeeProductInstanceReference: String, 
+    amount: String, 
+    currency: String, 
+    dateType: {| date: String |}, 
+    paymentMechanismType: String, 
+    paymentInstructions: String, 
+    interestedParties: String, 
+    productType: String, 
+    settlementInstructions: String
+  |}
+|} {"example": "{\\\"paymentOrderServicingSessionReference\\\":\\\"POSSR744360\\\",\\\"paymentOrderProcedureInitiateActionRecord\\\":{\\\"EndToEndIdentification\\\":\\\"PmtTx-4c3abc67-a2c0-41fe-bb76-5444c827958e\\\",\\\"CurrencyOfTransfer\\\":\\\"USD\\\",\\\"ExchangeRate\\\":1.0},\\\"paymentOrderProcedureInstanceStatus\\\":\\\"string\\\",\\\"paymentOrderProcedureInstanceRecord\\\":{\\\"paymentTransactionInitiatorReference\\\":\\\"707294\\\",\\\"payerReference\\\":\\\"767057\\\",\\\"payerBankReference\\\":\\\"751327\\\",\\\"payerProductInstanceReference\\\":\\\"776290\\\",\\\"payeeReference\\\":\\\"746110\\\",\\\"payeeBankReference\\\":\\\"760217\\\",\\\"payeeProductInstanceReference\\\":\\\"706967\\\",\\\"amount\\\":\\\"USD 250\\\",\\\"currency\\\":\\\"USD\\\",\\\"dateType\\\":{\\\"date\\\":\\\"09-22-2018\\\"},\\\"paymentMechanismType\\\":\\\"string\\\",\\\"paymentInstructions\\\":\\\"string\\\",\\\"interestedParties\\\":\\\"string\\\",\\\"productType\\\":\\\"string\\\",\\\"settlementInstructions\\\":\\\"string\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-outboundHeaders" format="java">
+      <types:shape format="weave" example="weave/autogenerated/622774e7-496c-4c61-85ae-2280d2c52c6e/Output-Variables-outboundHeaders.wev" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[%dw 2.0
+
+type auto_622774e7_496c_4c61_85ae_2280d2c52c6e_Output_Variables_outboundHeaders = {|  |}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-httpStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="88b9c756-ca1b-4dba-a9c8-6a908f5cd395"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_af651080-dee0-4b8a-b1b1-ac71e4284807_Output-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/af651080-dee0-4b8a-b1b1-ac71e4284807/Output-Payload.wev" autogeneratedOrigin="fad5ec2e-f141-48ae-bf29-04fe68840f01"><![CDATA[%dw 2.0
+
+type auto_af651080_dee0_4b8a_b1b1_ac71e4284807_Output_Payload = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_af651080-dee0-4b8a-b1b1-ac71e4284807_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/af651080-dee0-4b8a-b1b1-ac71e4284807/Output-Attributes.wev" autogeneratedOrigin="fad5ec2e-f141-48ae-bf29-04fe68840f01"><![CDATA[%dw 2.0
+
+type auto_af651080_dee0_4b8a_b1b1_ac71e4284807_Output_Attributes = {|
+  statusCode: Number, 
+  reasonPhrase: String, 
+  headers: { _?: String }
+|} {"typeAlias": "HttpResponseAttributes",
+"typeId": "org.mule.extension.http.api.HttpResponseAttributes"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_af651080-dee0-4b8a-b1b1-ac71e4284807_Output-Variables-sysCheckHost" format="java">
+      <types:shape format="raml" autogeneratedOrigin="fad5ec2e-f141-48ae-bf29-04fe68840f01"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_af651080-dee0-4b8a-b1b1-ac71e4284807_Output-Variables-backendSystemStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="fad5ec2e-f141-48ae-bf29-04fe68840f01"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_8cd4d820-2b38-41c9-83f5-002ec2258722_Output-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/8cd4d820-2b38-41c9-83f5-002ec2258722/Output-Payload.wev" autogeneratedOrigin="1ca91b9f-ca85-4ca9-a092-839ee71c7b6c"><![CDATA[%dw 2.0
+
+type auto_8cd4d820_2b38_41c9_83f5_002ec2258722_Output_Payload = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_8cd4d820-2b38-41c9-83f5-002ec2258722_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/8cd4d820-2b38-41c9-83f5-002ec2258722/Output-Attributes.wev" autogeneratedOrigin="1ca91b9f-ca85-4ca9-a092-839ee71c7b6c"><![CDATA[%dw 2.0
+
+type auto_8cd4d820_2b38_41c9_83f5_002ec2258722_Output_Attributes = {|
+  statusCode: Number, 
+  reasonPhrase: String, 
+  headers: { _?: String }
+|} {"typeAlias": "HttpResponseAttributes",
+"typeId": "org.mule.extension.http.api.HttpResponseAttributes"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_8cd4d820-2b38-41c9-83f5-002ec2258722_Output-Variables-sysCheckHost" format="java">
+      <types:shape format="raml" autogeneratedOrigin="1ca91b9f-ca85-4ca9-a092-839ee71c7b6c"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_8cd4d820-2b38-41c9-83f5-002ec2258722_Output-Variables-backendSystemStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="1ca91b9f-ca85-4ca9-a092-839ee71c7b6c"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_42f00f74-8aed-4f9b-a786-658aeec39f4d_Output-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/42f00f74-8aed-4f9b-a786-658aeec39f4d/Output-Payload.wev" autogeneratedOrigin="7e741341-1c5f-458d-82ea-b741674d09a0"><![CDATA[%dw 2.0
+
+type auto_42f00f74_8aed_4f9b_a786_658aeec39f4d_Output_Payload = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_42f00f74-8aed-4f9b-a786-658aeec39f4d_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/42f00f74-8aed-4f9b-a786-658aeec39f4d/Output-Attributes.wev" autogeneratedOrigin="7e741341-1c5f-458d-82ea-b741674d09a0"><![CDATA[%dw 2.0
+
+type auto_42f00f74_8aed_4f9b_a786_658aeec39f4d_Output_Attributes = {|
+  statusCode: Number, 
+  reasonPhrase: String, 
+  headers: { _?: String }
+|} {"typeAlias": "HttpResponseAttributes",
+"typeId": "org.mule.extension.http.api.HttpResponseAttributes"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_42f00f74-8aed-4f9b-a786-658aeec39f4d_Output-Variables-sysCheckHost" format="java">
+      <types:shape format="raml" autogeneratedOrigin="7e741341-1c5f-458d-82ea-b741674d09a0"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_42f00f74-8aed-4f9b-a786-658aeec39f4d_Output-Variables-backendSystemStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="7e741341-1c5f-458d-82ea-b741674d09a0"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_6b67e051-9dc3-4d08-9132-46028f682bf6_Output-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/6b67e051-9dc3-4d08-9132-46028f682bf6/Output-Payload.wev" autogeneratedOrigin="72778062-6304-4fbc-9361-5fe30a4e5d33"><![CDATA[%dw 2.0
+
+type auto_6b67e051_9dc3_4d08_9132_46028f682bf6_Output_Payload = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_6b67e051-9dc3-4d08-9132-46028f682bf6_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/6b67e051-9dc3-4d08-9132-46028f682bf6/Output-Attributes.wev" autogeneratedOrigin="72778062-6304-4fbc-9361-5fe30a4e5d33"><![CDATA[%dw 2.0
+
+type auto_6b67e051_9dc3_4d08_9132_46028f682bf6_Output_Attributes = {|
+  statusCode: Number, 
+  reasonPhrase: String, 
+  headers: { _?: String }
+|} {"typeAlias": "HttpResponseAttributes",
+"typeId": "org.mule.extension.http.api.HttpResponseAttributes"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_6b67e051-9dc3-4d08-9132-46028f682bf6_Output-Variables-sysCheckHost" format="java">
+      <types:shape format="raml" autogeneratedOrigin="72778062-6304-4fbc-9361-5fe30a4e5d33"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_6b67e051-9dc3-4d08-9132-46028f682bf6_Output-Variables-backendSystemStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="72778062-6304-4fbc-9361-5fe30a4e5d33"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_331067e6-216e-4913-a4d8-7b93b8b4cdf5_Output-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/331067e6-216e-4913-a4d8-7b93b8b4cdf5/Output-Payload.wev" autogeneratedOrigin="1622ffa0-191e-466a-bd0e-789ac666b8d6"><![CDATA[%dw 2.0
+
+type auto_331067e6_216e_4913_a4d8_7b93b8b4cdf5_Output_Payload = Array<{|  name: String,   status: String|}>
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_331067e6-216e-4913-a4d8-7b93b8b4cdf5_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/331067e6-216e-4913-a4d8-7b93b8b4cdf5/Output-Attributes.wev" autogeneratedOrigin="1622ffa0-191e-466a-bd0e-789ac666b8d6"><![CDATA[%dw 2.0
+
+type auto_331067e6_216e_4913_a4d8_7b93b8b4cdf5_Output_Attributes = {|
+  statusCode: Number, 
+  reasonPhrase: String, 
+  headers: { _?: String }
+|} {"typeAlias": "HttpResponseAttributes",
+"typeId": "org.mule.extension.http.api.HttpResponseAttributes"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_331067e6-216e-4913-a4d8-7b93b8b4cdf5_Output-Variables-sysCheckHost" format="java">
+      <types:shape format="raml" autogeneratedOrigin="1622ffa0-191e-466a-bd0e-789ac666b8d6"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_331067e6-216e-4913-a4d8-7b93b8b4cdf5_Output-Variables-backendSystemStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="1622ffa0-191e-466a-bd0e-789ac666b8d6"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Input-Variables-initialRequest" format="java">
+      <types:shape format="weave" example="weave/autogenerated/193ded90-bed4-43c1-8215-8edb6eb64eaa/Input-Variables-initialRequest.wev" autogeneratedOrigin="2345d9da-4bab-48c8-b9fc-e6db802d4e08"><![CDATA[%dw 2.0
+
+type auto_193ded90_bed4_43c1_8215_8edb6eb64eaa_Input_Variables_initialRequest = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Input-Variables-initial _request" format="json">
+      <types:shape format="weave" example="example/payment_order_initiate_req.json" autogeneratedOrigin="2345d9da-4bab-48c8-b9fc-e6db802d4e08"><![CDATA[%dw 2.0
+
+type auto_193ded90_bed4_43c1_8215_8edb6eb64eaa_Input_Variables_initial _request = {|
+  paymentOrderServicingSessionReference: String, 
+  paymentOrderProcedureInitiateActionRecord: {|
+    EndToEndIdentification: String, 
+    CurrencyOfTransfer: String, 
+    ExchangeRate: Number {"typeId": "double"}
+  |}, 
+  paymentOrderProcedureInstanceStatus: String, 
+  paymentOrderProcedureInstanceRecord: {|
+    paymentTransactionInitiatorReference: String, 
+    payerReference: String, 
+    payerBankReference: String, 
+    payerProductInstanceReference: String, 
+    payeeReference: String, 
+    payeeBankReference: String, 
+    payeeProductInstanceReference: String, 
+    amount: String, 
+    currency: String, 
+    dateType: {| date: String |}, 
+    paymentMechanismType: String, 
+    paymentInstructions: String, 
+    interestedParties: String, 
+    productType: String, 
+    settlementInstructions: String
+  |}
+|} {"example": "{\\\"paymentOrderServicingSessionReference\\\":\\\"POSSR744360\\\",\\\"paymentOrderProcedureInitiateActionRecord\\\":{\\\"EndToEndIdentification\\\":\\\"PmtTx-4c3abc67-a2c0-41fe-bb76-5444c827958e\\\",\\\"CurrencyOfTransfer\\\":\\\"USD\\\",\\\"ExchangeRate\\\":1.0},\\\"paymentOrderProcedureInstanceStatus\\\":\\\"string\\\",\\\"paymentOrderProcedureInstanceRecord\\\":{\\\"paymentTransactionInitiatorReference\\\":\\\"707294\\\",\\\"payerReference\\\":\\\"767057\\\",\\\"payerBankReference\\\":\\\"751327\\\",\\\"payerProductInstanceReference\\\":\\\"776290\\\",\\\"payeeReference\\\":\\\"746110\\\",\\\"payeeBankReference\\\":\\\"760217\\\",\\\"payeeProductInstanceReference\\\":\\\"706967\\\",\\\"amount\\\":\\\"USD 250\\\",\\\"currency\\\":\\\"USD\\\",\\\"dateType\\\":{\\\"date\\\":\\\"09-22-2018\\\"},\\\"paymentMechanismType\\\":\\\"string\\\",\\\"paymentInstructions\\\":\\\"string\\\",\\\"interestedParties\\\":\\\"string\\\",\\\"productType\\\":\\\"string\\\",\\\"settlementInstructions\\\":\\\"string\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Output-Payload" format="json">
+      <types:shape format="weave" example="examples/bank_list_sample.json" autogeneratedOrigin="2345d9da-4bab-48c8-b9fc-e6db802d4e08"><![CDATA[%dw 2.0
+
+type auto_193ded90_bed4_43c1_8215_8edb6eb64eaa_Output_Payload = Array<{|  BankCode: String,   BankName: String,   CountryHQ: String,   StateHQ: String,   CityHQ: String|}> {"example": "[{\\\"BankCode\\\":\\\"BOFAUS3N\\\",\\\"BankName\\\":\\\"BOA\\\",\\\"CountryHQ\\\":\\\"USA\\\",\\\"StateHQ\\\":\\\"North Carolina\\\",\\\"CityHQ\\\":\\\"Charlotte\\\"},{\\\"BankCode\\\":\\\"CITICATTBCH\\\",\\\"BankName\\\":\\\"CITI\\\",\\\"CountryHQ\\\":\\\"USA\\\",\\\"StateHQ\\\":\\\"New York\\\",\\\"CityHQ\\\":\\\"New York\\\"},{\\\"BankCode\\\":\\\"ROYCCAT2IBO\\\",\\\"BankName\\\":\\\"RBC\\\",\\\"CountryHQ\\\":\\\"Canada\\\",\\\"StateHQ\\\":\\\"Ontario\\\",\\\"CityHQ\\\":\\\"Toronto\\\"},{\\\"BankCode\\\":\\\"CIBCCATTXXX\\\",\\\"BankName\\\":\\\"CIBC\\\",\\\"CountryHQ\\\":\\\"Canada\\\",\\\"StateHQ\\\":\\\"Ontario\\\",\\\"CityHQ\\\":\\\"Toronto\\\"},{\\\"BankCode\\\":\\\"DEUTDEFF\\\",\\\"BankName\\\":\\\"DeutscheBank\\\",\\\"CountryHQ\\\":\\\"Germany\\\",\\\"StateHQ\\\":\\\"Frankurt\\\",\\\"CityHQ\\\":\\\"Frankfurt\\\"},{\\\"BankCode\\\":\\\"HKBCCATT\\\",\\\"BankName\\\":\\\"HSBC\\\",\\\"CountryHQ\\\":\\\"UK\\\",\\\"StateHQ\\\":\\\"London\\\",\\\"CityHQ\\\":\\\"London\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Output-Variables-httpStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="2345d9da-4bab-48c8-b9fc-e6db802d4e08"><![CDATA[#%RAML 1.0 DataType
+type: number]]></types:shape>
+    </types:type>
+    <types:type name="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Output-Variables-initialRequest" format="java">
+      <types:shape format="weave" example="weave/autogenerated/193ded90-bed4-43c1-8215-8edb6eb64eaa/Output-Variables-initialRequest.wev" autogeneratedOrigin="2345d9da-4bab-48c8-b9fc-e6db802d4e08"><![CDATA[%dw 2.0
+
+type auto_193ded90_bed4_43c1_8215_8edb6eb64eaa_Output_Variables_initialRequest = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Output-Variables-exceptionResponse" format="json">
+      <types:shape format="weave" example="weave/autogenerated/193ded90-bed4-43c1-8215-8edb6eb64eaa/Output-Variables-exceptionResponse.wev" autogeneratedOrigin="2345d9da-4bab-48c8-b9fc-e6db802d4e08"><![CDATA[%dw 2.0
+
+type auto_193ded90_bed4_43c1_8215_8edb6eb64eaa_Output_Variables_exceptionResponse = {|
+  errorCode: Number, 
+  errorMessage: org_mule_runtime_api_metadata_TypedValue | String | Null, 
+  transactionId: String, 
+  timeStamp: DateTime, 
+  causedBy: Null
+|}
+type org_mule_runtime_api_metadata_TypedValue = {|
+  byteLength?: java_util_OptionalLong, 
+  dataType?: org_mule_runtime_api_metadata_DataType, 
+  length?: java_util_Optional, 
+  value?: java_lang_Object
+|} {"typeId": "org.mule.runtime.api.metadata.TypedValue"}
+type org_mule_runtime_api_metadata_DataType = {|
+  mediaType?: org_mule_runtime_api_metadata_MediaType, 
+  streamType?: Boolean {"typeId": "boolean"}, 
+  "type"?: String
+|} {"typeId": "org.mule.runtime.api.metadata.DataType"}
+type org_mule_runtime_api_metadata_MediaType = {|
+  charset?: java_util_Optional, 
+  definedInApp?: Boolean {"typeId": "boolean"}, 
+  primaryType?: String, 
+  subType?: String
+|} {"typeId": "org.mule.runtime.api.metadata.MediaType"}
+type java_util_Optional = java_util_Optional
+
+
+
+
+
+
+type java_lang_Object = {|  |} {"class": "java.lang.Object",
+"typeId": "java.lang.Object"}
+
+
+type java_util_OptionalLong = {|
+  asLong?: Number, 
+  empty?: Boolean {"typeId": "boolean"}, 
+  present?: Boolean {"typeId": "boolean"}
+|} {"typeId": "java.util.OptionalLong"}
+
+
+
+
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Output-Variables-initial _request" format="json">
+      <types:shape format="weave" example="example/payment_order_initiate_req.json" autogeneratedOrigin="2345d9da-4bab-48c8-b9fc-e6db802d4e08"><![CDATA[%dw 2.0
+
+type auto_193ded90_bed4_43c1_8215_8edb6eb64eaa_Output_Variables_initial _request = {|
+  paymentOrderServicingSessionReference: String, 
+  paymentOrderProcedureInitiateActionRecord: {|
+    EndToEndIdentification: String, 
+    CurrencyOfTransfer: String, 
+    ExchangeRate: Number {"typeId": "double"}
+  |}, 
+  paymentOrderProcedureInstanceStatus: String, 
+  paymentOrderProcedureInstanceRecord: {|
+    paymentTransactionInitiatorReference: String, 
+    payerReference: String, 
+    payerBankReference: String, 
+    payerProductInstanceReference: String, 
+    payeeReference: String, 
+    payeeBankReference: String, 
+    payeeProductInstanceReference: String, 
+    amount: String, 
+    currency: String, 
+    dateType: {| date: String |}, 
+    paymentMechanismType: String, 
+    paymentInstructions: String, 
+    interestedParties: String, 
+    productType: String, 
+    settlementInstructions: String
+  |}
+|} {"example": "{\\\"paymentOrderServicingSessionReference\\\":\\\"POSSR744360\\\",\\\"paymentOrderProcedureInitiateActionRecord\\\":{\\\"EndToEndIdentification\\\":\\\"PmtTx-4c3abc67-a2c0-41fe-bb76-5444c827958e\\\",\\\"CurrencyOfTransfer\\\":\\\"USD\\\",\\\"ExchangeRate\\\":1.0},\\\"paymentOrderProcedureInstanceStatus\\\":\\\"string\\\",\\\"paymentOrderProcedureInstanceRecord\\\":{\\\"paymentTransactionInitiatorReference\\\":\\\"707294\\\",\\\"payerReference\\\":\\\"767057\\\",\\\"payerBankReference\\\":\\\"751327\\\",\\\"payerProductInstanceReference\\\":\\\"776290\\\",\\\"payeeReference\\\":\\\"746110\\\",\\\"payeeBankReference\\\":\\\"760217\\\",\\\"payeeProductInstanceReference\\\":\\\"706967\\\",\\\"amount\\\":\\\"USD 250\\\",\\\"currency\\\":\\\"USD\\\",\\\"dateType\\\":{\\\"date\\\":\\\"09-22-2018\\\"},\\\"paymentMechanismType\\\":\\\"string\\\",\\\"paymentInstructions\\\":\\\"string\\\",\\\"interestedParties\\\":\\\"string\\\",\\\"productType\\\":\\\"string\\\",\\\"settlementInstructions\\\":\\\"string\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_43fb056c-b5cb-4743-b025-7387f85b0e4f_Output-Variables-notificationsSend" format="java">
+      <types:shape format="raml" autogeneratedOrigin="c2a02c89-cdaa-4ae0-b3f8-93322a0ba885"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_506c4585-11c9-4bcd-8643-5c2038e75f2e_Input-Payload" format="json">
+      <types:shape format="weave" example="weave/autogenerated/506c4585-11c9-4bcd-8643-5c2038e75f2e/Input-Payload.wev" autogeneratedOrigin="253d0ae3-0237-437e-88b5-5cc7bb49fb67"><![CDATA[%dw 2.0
+
+type auto_506c4585_11c9_4bcd_8643_5c2038e75f2e_Input_Payload = {
+  PaymentOrderProcedure?: {
+    PayeeProductInstanceReference?: { _?: Any }, 
+    Amount?: String, 
+    ProductType?: String, 
+    PaymentMechanismType?: String, 
+    PayerBankReference?: { _?: Any }, 
+    PayeeReference?: { _?: Any }, 
+    PayerReference?: { _?: Any }, 
+    PaymentTransactionInitiatorReference?: { _?: Any }, 
+    PayeeBankReference?: { _?: Any }, 
+    Currency?: String, 
+    SettlementInstructions?: String, 
+    PayerProductInstanceReference?: { _?: Any }, 
+    PaymentInstructions?: String, 
+    InterestedParties?: String, 
+    DateType?: String, 
+    _?: Any
+  }, 
+  _?: Any
+}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_506c4585-11c9-4bcd-8643-5c2038e75f2e_Input-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/506c4585-11c9-4bcd-8643-5c2038e75f2e/Input-Attributes.wev" autogeneratedOrigin="253d0ae3-0237-437e-88b5-5cc7bb49fb67"><![CDATA[%dw 2.0
+
+type auto_506c4585_11c9_4bcd_8643_5c2038e75f2e_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_506c4585-11c9-4bcd-8643-5c2038e75f2e_Output-Payload" format="json">
+      <types:shape format="weave" example="weave/autogenerated/506c4585-11c9-4bcd-8643-5c2038e75f2e/Output-Payload.wev" autogeneratedOrigin="253d0ae3-0237-437e-88b5-5cc7bb49fb67"><![CDATA[%dw 2.0
+
+type auto_506c4585_11c9_4bcd_8643_5c2038e75f2e_Output_Payload = {
+  PaymentOrderProcedure?: {
+    PaymentMechanismType?: String, 
+    _?: Any
+  }, 
+  _?: Any
+}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_506c4585-11c9-4bcd-8643-5c2038e75f2e_Output-Variables-outboundHeaders" format="java">
+      <types:shape format="weave" example="weave/autogenerated/506c4585-11c9-4bcd-8643-5c2038e75f2e/Output-Variables-outboundHeaders.wev" autogeneratedOrigin="253d0ae3-0237-437e-88b5-5cc7bb49fb67"><![CDATA[%dw 2.0
+
+type auto_506c4585_11c9_4bcd_8643_5c2038e75f2e_Output_Variables_outboundHeaders = {|  |}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_506c4585-11c9-4bcd-8643-5c2038e75f2e_Output-Variables-httpStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="253d0ae3-0237-437e-88b5-5cc7bb49fb67"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#e6cff08a-6337-47a2-b44e-eb40e176919c">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="payment_order_acrtivation_req"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#ee296859-a0bb-434d-865c-25dee121779e">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="payment_order_activation_resp"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8c910cdb-5b1d-4294-ba87-0696e32a6ac2">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:variables>
+          <types:variable name="sd-reference-id" type="payment_order_initiate_req"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#13919c1d-b041-4648-95d2-9fd67f075ee6">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="payment_order_initiate_resp"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#1908ca81-7fca-4ae4-add1-a3a18b508309">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="payment_order_initiate_req"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="payment_order_initiate_resp"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b577f51b-035b-490e-a95d-00554e112731">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="bank_list"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="initial _request" type="payment_order_initiate_req"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#5e1d8474-09bd-490d-a519-e37ad23c99e3">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="initial _request" type="payment_order_initiate_req"/>
+        </types:variables>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="route_path_req"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b68866b2-8da3-4302-a23e-6f36615254f9">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="payment_order_initiate_req"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#50a7a631-5e62-49ec-8f9f-db05881465dd">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="route_path_resp"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b6a323eb-abfc-4cb9-bca1-6e74993e8a2d">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="route_path_resp"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b42013f2-9b30-4c77-9abd-9f20c9a33a3a">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="payment_execution_req"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#2ab92832-13df-4472-8614-0580e215ac9c">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="route_path_resp"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="initial _request" type="payment_order_initiate_req"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#6581d9c2-8bca-4872-a91f-12c59f9a602d">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="route_path_resp"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="payment_execution_req"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#622774e7-496c-4c61-85ae-2280d2c52c6e">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Input-Payload"/>
+          <types:attributes type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Input-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="outboundHeaders" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Input-Variables-outboundHeaders"/>
+          <types:variable name="httpStatus" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Input-Variables-httpStatus"/>
+        </types:variables>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Payload"/>
+          <types:attributes type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="dest_bank_county" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-dest_bank_county"/>
+          <types:variable name="outboundHeaders" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-outboundHeaders"/>
+          <types:variable name="InterBankNat" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-InterBankNat"/>
+          <types:variable name="IntraBankInt" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-IntraBankInt"/>
+          <types:variable name="Remit" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-Remit"/>
+          <types:variable name="IntraBankNat" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-IntraBankNat"/>
+          <types:variable name="src_bank_country" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-src_bank_country"/>
+          <types:variable name="httpStatus" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-httpStatus"/>
+          <types:variable name="InterBankInt" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-InterBankInt"/>
+          <types:variable name="sid" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-sid"/>
+          <types:variable name="original_route_req" type="auto_622774e7-496c-4c61-85ae-2280d2c52c6e_Output-Variables-original_route_req"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#af651080-dee0-4b8a-b1b1-ac71e4284807">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_af651080-dee0-4b8a-b1b1-ac71e4284807_Output-Payload"/>
+          <types:attributes type="auto_af651080-dee0-4b8a-b1b1-ac71e4284807_Output-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="sysCheckHost" type="auto_af651080-dee0-4b8a-b1b1-ac71e4284807_Output-Variables-sysCheckHost"/>
+          <types:variable name="backendSystemStatus" type="auto_af651080-dee0-4b8a-b1b1-ac71e4284807_Output-Variables-backendSystemStatus"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8cd4d820-2b38-41c9-83f5-002ec2258722">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_8cd4d820-2b38-41c9-83f5-002ec2258722_Output-Payload"/>
+          <types:attributes type="auto_8cd4d820-2b38-41c9-83f5-002ec2258722_Output-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="sysCheckHost" type="auto_8cd4d820-2b38-41c9-83f5-002ec2258722_Output-Variables-sysCheckHost"/>
+          <types:variable name="backendSystemStatus" type="auto_8cd4d820-2b38-41c9-83f5-002ec2258722_Output-Variables-backendSystemStatus"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#42f00f74-8aed-4f9b-a786-658aeec39f4d">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_42f00f74-8aed-4f9b-a786-658aeec39f4d_Output-Payload"/>
+          <types:attributes type="auto_42f00f74-8aed-4f9b-a786-658aeec39f4d_Output-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="sysCheckHost" type="auto_42f00f74-8aed-4f9b-a786-658aeec39f4d_Output-Variables-sysCheckHost"/>
+          <types:variable name="backendSystemStatus" type="auto_42f00f74-8aed-4f9b-a786-658aeec39f4d_Output-Variables-backendSystemStatus"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#6b67e051-9dc3-4d08-9132-46028f682bf6">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_6b67e051-9dc3-4d08-9132-46028f682bf6_Output-Payload"/>
+          <types:attributes type="auto_6b67e051-9dc3-4d08-9132-46028f682bf6_Output-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="sysCheckHost" type="auto_6b67e051-9dc3-4d08-9132-46028f682bf6_Output-Variables-sysCheckHost"/>
+          <types:variable name="backendSystemStatus" type="auto_6b67e051-9dc3-4d08-9132-46028f682bf6_Output-Variables-backendSystemStatus"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#331067e6-216e-4913-a4d8-7b93b8b4cdf5">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_331067e6-216e-4913-a4d8-7b93b8b4cdf5_Output-Payload"/>
+          <types:attributes type="auto_331067e6-216e-4913-a4d8-7b93b8b4cdf5_Output-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="sysCheckHost" type="auto_331067e6-216e-4913-a4d8-7b93b8b4cdf5_Output-Variables-sysCheckHost"/>
+          <types:variable name="backendSystemStatus" type="auto_331067e6-216e-4913-a4d8-7b93b8b4cdf5_Output-Variables-backendSystemStatus"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#193ded90-bed4-43c1-8215-8edb6eb64eaa">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="initial _request" type="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Input-Variables-initial _request"/>
+          <types:variable name="initialRequest" type="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Input-Variables-initialRequest"/>
+        </types:variables>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Output-Payload"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="initial _request" type="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Output-Variables-initial _request"/>
+          <types:variable name="httpStatus" type="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Output-Variables-httpStatus"/>
+          <types:variable name="initialRequest" type="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Output-Variables-initialRequest"/>
+          <types:variable name="exceptionResponse" type="auto_193ded90-bed4-43c1-8215-8edb6eb64eaa_Output-Variables-exceptionResponse"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#43fb056c-b5cb-4743-b025-7387f85b0e4f">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:variables>
+          <types:variable name="notificationsSend" type="auto_43fb056c-b5cb-4743-b025-7387f85b0e4f_Output-Variables-notificationsSend"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#506c4585-11c9-4bcd-8643-5c2038e75f2e">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="auto_506c4585-11c9-4bcd-8643-5c2038e75f2e_Input-Payload"/>
+          <types:attributes type="auto_506c4585-11c9-4bcd-8643-5c2038e75f2e_Input-Attributes"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_506c4585-11c9-4bcd-8643-5c2038e75f2e_Output-Payload"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="outboundHeaders" type="auto_506c4585-11c9-4bcd-8643-5c2038e75f2e_Output-Variables-outboundHeaders"/>
+          <types:variable name="httpStatus" type="auto_506c4585-11c9-4bcd-8643-5c2038e75f2e_Output-Variables-httpStatus"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

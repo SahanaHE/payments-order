@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.mule.examples</groupId>
+		<artifactId>accelerator-pom-parent</artifactId>
+		<version>2.3.1</version>
+	</parent>
+
+	<groupId>org.mule.examples</groupId>
+	<artifactId>fins-payments-order-prc-api</artifactId>
+	<version>1.4.0</version>
+	<packaging>mule-application</packaging>
+
+	<name>fins-payments-order-prc-api-1.4.0-mule-application-template_(1)</name>
+
+	<properties>
+		<api.name>FINS Payments Order Process API</api.name>
+		<api.version>v1</api.version>
+		<anypoint.platform.visualizerLayer>Process</anypoint.platform.visualizerLayer>
+		<accelerator-common-core.version>2.3.2</accelerator-common-core.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<cloudHubDeployment>
+						<properties>
+							<fins-payments-order-prc-api.http-client.client-id>${accelerator-api.client-id}</fins-payments-order-prc-api.http-client.client-id>
+							<fins-payments-order-prc-api.http-client.client-secret>${accelerator-api.client-secret}</fins-payments-order-prc-api.http-client.client-secret>
+						</properties>
+					</cloudHubDeployment>
+					<classifier>mule-application</classifier>
+				</configuration>
+				<version>3.8.0</version>
+			</plugin>
+			<plugin>
+				<groupId>com.mulesoft.munit.tools</groupId>
+				<artifactId>munit-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.mule.examples</groupId>
+				<artifactId>knit-maven-plugin</artifactId>
+				<configuration>
+					<moduleList>payment-order-payment-execution-input-payload</moduleList>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>accelerator-common-core</artifactId>
+			<version>${accelerator-common-core.version}</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>accelerator-banking-config-module</artifactId>
+			<version>1.1.0</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-sockets-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-http-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-apikit-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.modules</groupId>
+			<artifactId>mule-secure-configuration-property-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-validation-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-runner</artifactId>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-tools</artifactId>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.examples</groupId>
+			<artifactId>fins-bian-paymntorder-prc-api-spec</artifactId>
+			<version>10.0.0</version>
+			<classifier>oas</classifier>
+			<type>zip</type>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Anypoint Exchange V3</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+
+</project>

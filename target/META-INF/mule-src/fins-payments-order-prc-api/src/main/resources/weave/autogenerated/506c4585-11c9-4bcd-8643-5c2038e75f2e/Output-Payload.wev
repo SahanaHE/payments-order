@@ -1,0 +1,10 @@
+%dw 2.0
+
+type auto_506c4585_11c9_4bcd_8643_5c2038e75f2e_Output_Payload = {
+  PaymentOrderProcedure?: {
+    PaymentMechanismType?: String, 
+    _?: Any
+  }, 
+  _?: Any
+}
+

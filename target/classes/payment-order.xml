@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<sub-flow name="payment-order_post-payment-order-procedure" doc:id="622774e7-496c-4c61-85ae-2280d2c52c6e" >
+		<logger level="INFO" message="Payment Order Execution incoming ! #[payload]" doc:name="payment order incoming logger"/>
+		<ee:transform doc:name="initialise variables" doc:id="b91e3dce-ebef-48a0-b91c-2d8d46604d89" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="originalRouteRequest" ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="payment-order-get-banks" doc:id="c801991c-0ecc-4f8a-90d5-c7eea5bda22b" name="payment-order-get-banks" />
+		<ee:transform doc:name="payment router input payload" doc:id="5e1d8474-09bd-490d-a519-e37ad23c99e3">
+			<ee:message>
+				<ee:set-payload resource="dwl/payment-order-identify-route-input-pyalod.dwl" />
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="getPath" doc:id="7ebc0cb9-c401-49d6-9377-f98065abb542" name="payment-order-getRoutes" />
+		<flow-ref doc:name="executeRoute" doc:id="1f4e11ca-fd68-4931-b717-81368404bb42" name="payment-order-executeRoutePath" />
+		<ee:transform doc:name="payment order response" doc:id="1908ca81-7fca-4ae4-add1-a3a18b508309">
+			<ee:message>
+				<ee:set-payload resource="dwl/payment-order-initiation-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="payment-order-get-banks" doc:id="992b99a1-a047-417f-b8b4-b35c7f1237ad" >
+		<logger level="INFO" doc:name="get banks logger" doc:id="0ae1ebe3-703f-4a79-8d46-580052b7634c" message="Get Banks"/>
+		<set-variable value="#[payload]" doc:name="initialRequest" doc:id="7d87f80a-d5d8-471e-8242-46c13d36dabf" variableName="initialRequest"/>
+		<try doc:name="Try" doc:id="03780036-53e3-4cbd-a750-8592ab99567b" >
+			<http:request method="GET" doc:name="financial institutions request" doc:id="19b12096-d3e5-4026-a015-13d57350cc46" config-ref="financial-institutions-sys-httpRequestConfig" path="/institutions" responseTimeout="500000">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"institutionType" : "Bank"
+}]]]></http:query-params>
+		</http:request>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="8617fbfb-0550-45b3-b5fd-be9fc2f4b76f" >
+					<flow-ref doc:name="common-error-handler_http-exception" doc:id="2345d9da-4bab-48c8-b9fc-e6db802d4e08" name="common-error-handler_http-exception"/>
+					<raise-error doc:name="failed bank identification" doc:id="28df82cd-4612-48c1-aa95-7b1c4640b60c" type="ANY" description="Failed to get the Finanicial Institution"/>
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="financial institutions response and  country variables filter" doc:id="b577f51b-035b-490e-a95d-00554e112731" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="srcBankCountry" ><![CDATA[%dw 2.0
+output application/java
+---
+banks: payload  filter (vars."initialRequest".PaymentOrderProcedure.PayerBankReference.BankID == $.bankCode) map ((item, index) -> {
+      srcBankCountry: item.headquartersCountry,
+   }
+ 
+)  ]]></ee:set-variable>
+				<ee:set-variable variableName="destBankCountry" ><![CDATA[%dw 2.0
+output application/java
+---
+banks: payload filter(vars."initialRequest".PaymentOrderProcedure.PayeeBankReference.BankID == $.bankCode) map ((item, index) -> {
+          destBankCountry: item.headquartersCountry
+   }
+)]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="financial institutions country logger" doc:id="b93b44da-b48c-458c-bb91-ca906ac69972" message="Src FinancialInstitutions: #[vars.src_bank_country] &amp;&amp; Dest Bank Country : #[vars.dest_bank_county]"/>
+		<ee:transform doc:name="country variables" doc:id="1ce97288-20c5-4d8b-b898-45d3a8ea1539" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	srcBankCountry: if(vars.srcBankCountry.banks[0].srcBankCountry != null) vars.srcBankCountry.banks[0].srcBankCountry else "",
+	destBankCountry: if(vars.destBankCountry.banks[0].destBankCountry !=null) vars.destBankCountry.banks[0].destBankCountry else ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="payment-order-getRoutes" doc:id="d166e579-2ff5-403b-8886-9d7f38dc7ca1" >
+		<logger level="DEBUG" doc:name="execution path logger" doc:id="27eb4571-c1aa-4b53-8b36-0a0becd1f3e9" message=" Get Execution Path with in data: #[payload]"/>
+		<try doc:name="Try" doc:id="d8bb6374-b4dc-4fcf-aa5b-ce52b392a91f" >
+			<http:request method="POST" doc:name="payments router payment execution request" doc:id="a0068d83-a580-493c-ac4a-7bbea3283d8d" config-ref="payments-router-prc-httpRequestConfig" outputMimeType="application/json" url="https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/org.mule.examples/fins-payments-router-prc-api-spec/1.3.4/m/PaymentExecution"/>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="531c5789-eb80-4468-ad0f-2c3188ddf363" >
+					<flow-ref doc:name="common-error-handler_http-exception" doc:id="f6b858ed-14d6-4e13-9770-6e6c75d89d0a" name="common-error-handler_http-exception"/>
+					<raise-error doc:name="failed payment router execution" doc:id="be937543-75ea-4684-a4ae-535377462157" type="ANY" description="Failed in Payment Router Excecution"/>
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="payment router response" doc:id="3c1203ae-50a5-4630-9687-4e14268de779">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="DEBUG" doc:name="payment router result logger" doc:id="dd2a24df-1a0a-4995-b313-303f84c6bd92" message="RoutePath result: #[payload]" />
+	</sub-flow>
+	<sub-flow name="payment-order-executeRoutePath" doc:id="e7219333-be87-4a23-ad57-cf657e060f24" >
+		<choice doc:name="Choice" doc:id="e4e32df2-15d1-4a33-8945-c14ae145f31e" >
+			<when expression='#[payload.PaymentExecutionCode == "INTRA_BANK_NAT"]' doc:id="50a7a631-5e62-49ec-8f9f-db05881465dd" >
+				<logger level="INFO" doc:name="intra bank national  logger" doc:id="b4e69a66-0774-40d4-b6b4-563a3a6a4775" message="Executing an IntraBankNational Transaction !" />
+				<ee:transform doc:name="input payload" doc:id="6581d9c2-8bca-4872-a91f-12c59f9a602d">
+					<ee:message>
+						<ee:set-payload resource="dwl/payment-order-payment-execution-input-payload.dwl" />
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="sid" ><![CDATA[%dw 2.0
+output application/java
+---
+vars."originalRouteRequest".PaymentOrderProcedure.PaymentTransactionInitiatorReference.ServicingSessionReference]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<logger level="DEBUG" doc:name="intra bank national input logger" doc:id="cab730b6-d49b-420d-847a-1201f2932c5b" message="+++ Data going into IntraBankNational Execution: sid = #[vars.sid], payload : #[payload]" />
+				<try doc:name="Try" doc:id="3574523e-cc0a-45d9-abf3-53b39d0dff86" >
+			<http:request method="POST" doc:name="intra bank national request" doc:id="94095b8c-40c3-416d-8b0f-f2bc7d7ed78f" path="/PaymentExecution/Initiate" config-ref="payments-intrabanknatl-prc-httpRequestConfig">
+				</http:request>
+					<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="37a3c9bb-0a94-46e0-83a7-0fdaa9881928" >
+					<flow-ref doc:name="common-error-handler_http-exception" doc:id="768db831-53a7-42d4-bbb7-aabdbc8014db" name="common-error-handler_http-exception"/>
+					<raise-error doc:name="failed payment execution" doc:id="6eb0f6fa-59a5-47c9-8978-629fecc55c5b" type="ANY" description="Failed in Intra Bank National Payment Execution Process"/>
+				</on-error-propagate>
+			</error-handler>
+			</try>
+				<logger level="DEBUG" doc:name="intra bank national logger" doc:id="a40861df-388d-482f-9355-7703b8feb038" message="==&gt; IntraBankNat response: #[payload]"/>
+			</when>
+			<when expression='#[payload.PaymentExecutionCode == "INTRA_BANK_INT"]' >
+				<logger level="INFO" doc:name="intra bank international logger" doc:id="574abeb3-bd2a-47c0-b0ca-08374149ecbe" message="Executing IntraBankInternational Transaction !" />
+				<ee:transform doc:name="input payload" doc:id="da69ef6e-b060-4bb3-9a15-600caf296531">
+					<ee:message>
+						<ee:set-payload resource="dwl/payment-order-payment-execution-input-payload.dwl" />
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="sid" ><![CDATA[%dw 2.0
+output application/java
+---
+vars."originalRouteRequest".PaymentOrderProcedure.PaymentTransactionInitiatorReference.ServicingSessionReference]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<logger level="DEBUG" doc:name="intra bank international input logger" doc:id="70b56fc2-c29c-4892-b47b-9323be630e4e" message="+++ Data going into IntraBankNational Execution: sid = #[vars.sid], payload : #[payload]" />
+				<try doc:name="Try" doc:id="6968c1c1-059b-400d-b47e-3066982b9b70" >
+				<http:request method="POST" doc:name="intra bank international request" doc:id="d0a59a8e-0496-405c-a81f-36b72f37a2c3" config-ref="payments-intrabankintl-prc-httpRequestConfig" path="/PaymentExecution/Initiate">
+				</http:request>
+					<error-handler >
+					<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a907706a-cb45-4685-ba3d-7851a1a8fba0" >
+						<flow-ref doc:name="common-error-handler_http-exception" doc:id="a7a83f26-408f-48d6-9b35-0fe2834a97b0" name="common-error-handler_http-exception"/>
+						<raise-error doc:name="failed payment execution" doc:id="58fb6f48-d0ac-454d-9e53-f2797d24962d" type="ANY" description="Failed in Intra Bank International Payment Execution Process"/>
+					</on-error-propagate>
+				</error-handler>
+				</try>
+				<logger level="DEBUG" doc:name="intra bank international logger" doc:id="db081c07-ea5c-43c9-8490-7f1d7a8a7bbe" message="==&gt; IntraBankNat response: #[payload]" />
+			</when>
+			<when expression='#[payload.PaymentExecutionCode == "INTER_BANK_NAT"]' >
+				<logger level="INFO" doc:name="inter banknational logger" doc:id="73e59344-3911-48e0-a8d7-0d9e4e6e3ad5" message="Executing InterBankNational Transaction !" />
+				<ee:transform doc:name="input payload" doc:id="ddd52561-2618-487d-99e1-4be75f84364e">
+					<ee:message>
+						<ee:set-payload resource="dwl/payment-order-payment-execution-input-payload.dwl" />
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="sid" ><![CDATA[%dw 2.0
+output application/java
+---
+vars."originalRouteRequest".PaymentOrderProcedure.PaymentTransactionInitiatorReference.ServicingSessionReference]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<logger level="DEBUG" doc:name="inter bank national input logger" doc:id="6d3f55a8-7ab1-46ad-89e7-d8e1daefb544" message="+++ Data going into InterBankNational Execution: sid = #[vars.sid], payload : #[payload]" />
+				<try doc:name="Try" doc:id="7cb407f4-492d-4a1a-81a2-a660cbd61f1f" >
+					<http:request method="POST" doc:name="inter bank national request" doc:id="1d3ff2e3-66e9-4c65-bdb6-f88bff22775c" config-ref="payments-interbanknatl-prc-httpRequestConfig" path="/PaymentExecution/Initiate">
+				</http:request>
+					<error-handler >
+					<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="085906c5-f076-4d03-ba9e-bdc321ebebd2" >
+						<flow-ref doc:name="common-error-handler_http-exception" doc:id="c161d8bf-fb61-4772-a035-bff268d53f77" name="common-error-handler_http-exception"/>
+						<raise-error doc:name="failed payment execution" doc:id="7a5c7f7b-8c6d-4c11-8153-e49cd6f192e9" type="ANY" description="Failed in Inter Bank National Payment Execution Process"/>
+					</on-error-propagate>
+				</error-handler>
+				</try>
+				<logger level="DEBUG" doc:name="inter bank national logger" doc:id="e34a87e3-e4fd-492a-b5d8-b8a71851eb7b" message="==&gt; InterBankNational response: #[payload]" />
+			</when>
+			<when expression='#[payload.PaymentExecutionCode == "INTER_BANK_INT"]' >
+				<logger level="INFO" doc:name="inter bank international logger" doc:id="80d8d368-a25e-4474-9d29-7b4081fdbea9" message="Executing InterBankInternational Transaction !" />
+				<ee:transform doc:name="input payload" doc:id="7f753dbc-549d-456f-a8fc-a1b21a5c8b7c">
+					<ee:message>
+						<ee:set-payload resource="dwl/payment-order-payment-execution-input-payload.dwl" />
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="sid" ><![CDATA[%dw 2.0
+output application/java
+---
+vars."originalRouteRequest".PaymentOrderProcedure.PaymentTransactionInitiatorReference.ServicingSessionReference]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<logger level="DEBUG" doc:name="inter bank international input logger" doc:id="f67404fa-489e-4377-a7f1-88ad632fa610" message="+++ Data going into InterBankInternational Execution: sid = #[vars.sid], payload : #[payload]" />
+				<try doc:name="Try" doc:id="42e9c3a3-8b4e-4b78-97fa-121ae89bc02d" >
+					<http:request method="POST" doc:name="inter bank international request" doc:id="3d6d75c8-246c-47e8-90d4-8c8715950536" config-ref="payments-interbankintl-prc-httpRequestConfig" path="/PaymentExecution/Initiate">
+				</http:request>
+					<error-handler >
+					<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7520ae59-6ee6-4cd9-9b77-8c6f5ba1f1a2" >
+						<flow-ref doc:name="common-error-handler_http-exception" doc:id="af23141b-ff43-4a78-af30-4e0b4358eda3" name="common-error-handler_http-exception"/>
+						<raise-error doc:name="failed payment execution" doc:id="b6f7bc09-047a-4b4e-ac47-3a9233db9e6b" type="ANY" description="Failed in Inter Bank International Payment Execution Process"/>
+					</on-error-propagate>
+				</error-handler>
+				</try>
+				<logger level="DEBUG" doc:name="inter bank international logger" doc:id="464c6656-c3f8-4126-a53b-d3f87625c0fd" message="==&gt; InterBankNational response: #[payload]" />
+			</when>
+			<when expression='#[payload.PaymentExecutionCode == "REMIT"]' >
+				<logger level="INFO" doc:name="remittances logger" doc:id="6d2d254f-5204-40e2-9d5a-f3affd87f7b2" message="Executing Remittances !" />
+				<ee:transform doc:name="input payload" doc:id="b7668a9c-7543-4010-a385-b8e0c048990c">
+					<ee:message>
+						<ee:set-payload resource="dwl/payment-order-payment-execution-input-payload.dwl" />
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="sid" ><![CDATA[%dw 2.0
+output application/java
+---
+vars."originalRouteRequest".PaymentOrderProcedure.PaymentTransactionInitiatorReference.ServicingSessionReference]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<logger level="DEBUG" doc:name="remittances input logger" doc:id="92d0bd4a-7a66-43f3-9c30-b0f643456c52" message="+++ Data going into Remitances Execution: sid = #[vars.sid], payload : #[payload]" />
+				<try doc:name="Try" doc:id="0fb3e0bd-25a6-4d47-a411-fb726a0d8a6e" >
+
+					<http:request method="POST" doc:name="remitances request" doc:id="c1b1587a-2467-4bd7-92d7-b53d9023233e" config-ref="payments-remittances-prc-httpRequestConfig" path="/PaymentExecution/Initiate">
+				</http:request>
+					<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="cc44f4f5-525c-4341-8e2d-56dc1f10d1b9" >
+					<flow-ref doc:name="common-error-handler_http-exception" doc:id="1ae9dd3f-33b7-43be-86da-b7615d219e9c" name="common-error-handler_http-exception"/>
+					<raise-error doc:name="failed payment execution" doc:id="b6a2b112-0e89-4636-992f-7d6a01ee50a7" type="ANY" description="Failed in Remittances Payments Execution Process"/>
+				</on-error-propagate>
+			</error-handler>
+		</try>
+				<logger level="DEBUG" doc:name="remittances logger" doc:id="37b35473-6ba9-4939-ae3f-977aafa88043" message="==&gt; Remitances response: #[payload]" />
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="invalid route logger" doc:id="eb4a6a61-ae13-4a50-9433-8a71747ce9ae" message="**** INVALID PATH *****" />
+				<try doc:name="Try" doc:id="21fce535-4ebc-4847-af74-bbb791d6a247" >
+					<validation:is-false doc:name="No Payment Execution Path" doc:id="d6d3c18c-3882-4168-a5b9-84882f342c8f" expression="#[isEmpty(payload.PaymentExecutionCode)]" message='#["Could not identify Payment Execution Process for payment:" ++ "FromAccountId=" ++ (vars.originalRouteRequest.PaymentOrderProcedure.PayerReference.CustomerID) ++ " and ToAccountId= " ++ (vars.originalRouteRequest.PaymentOrderProcedure.PayeeReference.CustomerID) ++ " and Amount=" ++ (vars.originalRouteRequest.PaymentOrderProcedure.Amount) ++ " of Currency=" ++ (vars.originalRouteRequest.PaymentOrderProcedure.Currency)]'/>
+					<error-handler >
+						<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="877f8d71-69f2-4257-8a5e-3a38037cc473" >
+							<set-variable value="400" doc:name="httpStatus 400" doc:id="e16efb75-26fe-49c9-93a9-b2e65eaf4da2" variableName="httpStatus"/>
+						</on-error-propagate>
+					</error-handler>
+				</try>
+			</otherwise>
+		</choice>
+	</sub-flow>
+</mule>

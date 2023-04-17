@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="common-global-test-suite.xml" />
+	<munit:test name="common-error-handler-connector-exception" doc:id="63f8a182-1d39-42cb-9241-dd65ab38b7a5" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="42fe8602-63bd-4b18-bb47-84b679ee86d9" processor="sub-flow">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="605079c5-35c5-446e-81fe-f8b3580bf759" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="038ec9af-8bb7-40f6-a003-a115d0af3507" name="common-error-handler_connector-exception"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="0e17b3f0-f8c5-46b6-b22b-ec73648c6acc" processor="sub-flow">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="605079c5-35c5-446e-81fe-f8b3580bf759" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="common-error-handler-http-exception" doc:id="5c0a7579-7c0a-4f4b-a22b-851cf06a654c" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="7a7935fc-fc31-4092-b0cd-ffa2eaa4ff74" processor="sub-flow">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="193ded90-bed4-43c1-8215-8edb6eb64eaa" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="6e3b03fb-f484-46d9-9836-7d49fc3ab334" name="common-error-handler_http-exception"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="99f53294-2287-42b4-85b6-ad0f53a3da80" processor="sub-flow">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="193ded90-bed4-43c1-8215-8edb6eb64eaa" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="common-error-handler-log" doc:id="6c481429-9da2-451a-9b0a-b9a3fca222ec" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="dbe1da51-6d6d-4878-9fe8-7cdddf416da9" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e1080cfe-7aba-4d37-9fae-70ccc658f506" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="ef0031ac-ecc4-404f-bab9-d2d627037d1d" name="common-error-handler_log"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="41cb9b21-bb53-4260-a6c8-5bc64ce51a43" processor="sub-flow">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2f583c92-4d21-441d-bc45-41a8ccfc9336" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="common-error-handler-notification" doc:id="4beec3ce-5ecd-4a19-a250-92485a723640" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="980fe0cc-0e0d-4eee-b145-241a9deb701b" processor="sub-flow">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4fd2cb6d-500f-405a-ae95-e9fae76f475c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="5d9ffd90-1da2-4ef5-b234-0b0ba39cec67" name="common-error-handler_notification"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="d1949785-697c-4347-9588-d08adfb30d32" processor="sub-flow">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4fd2cb6d-500f-405a-ae95-e9fae76f475c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="common-error-handler-send-all" doc:id="19e99386-2e97-4983-aadc-d16995e0f472" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="cc5780ae-300e-4fa1-9d2e-defaaade78e7" processor="sub-flow">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="26c5fe6b-6e6a-4f4f-86bb-225fb4aa1989" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="cb8e837d-aece-4063-bc1f-e45d1d9a88a8" name="common-error-handler_send-all"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="030487f0-2dd1-4e1a-8651-886b90e91a5a" processor="sub-flow">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="26c5fe6b-6e6a-4f4f-86bb-225fb4aa1989" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="common-error-handler-send-notifications" doc:id="93da970f-587a-4a39-beab-e4339c4dfe60" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="a5262988-fc79-480b-8bb5-c95dd5f3f0c1" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="notifications-prc-api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="46380ca4-51b4-475f-80e4-c62ff01370f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<flow-ref doc:name="Flow Reference" doc:id="c2a02c89-cdaa-4ae0-b3f8-93322a0ba885" name="common-error-handler_send-notifications"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:name="Verify call" doc:id="28984f37-1434-458c-9265-785926aca8b0" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="notifications-prc-api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="46380ca4-51b4-475f-80e4-c62ff01370f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="APIKIT:BAD_REQUEST" doc:id="1e68150f-0a0e-4014-8057-0c9945908415" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="357eb239-960f-4cd2-ade0-5d97c2fde846" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:BAD_REQUEST" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="32efa866-462a-45e0-8aa8-8bbf0a738afb" >
+				<flow-ref doc:name="Flow Reference" doc:id="4812a995-efdd-486b-abd6-f317feb6fd32" name="payments-order-prc-main"/>
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f6408884-d47d-4601-abc4-4c91b97f16ee">
+						<logger level="INFO" doc:name="Logger" doc:id="456662ca-359c-43e5-b1cb-d1c59d4b9cba" message="Bad request"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="1c46731d-103b-400a-933e-5652b1a17090" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="APIKIT:NOT_FOUND" doc:id="4c15d7b4-6c0b-4376-ab8d-9a76f427e624" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="a8d2be91-6f8d-4b99-8209-56a0332b5580" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="9102efec-a0a1-4226-9688-3111e5729e6d" >
+				<flow-ref doc:name="Flow Reference" doc:id="9236e6c0-ae54-42f8-bb52-56151c0f8c1a" name="payments-order-prc-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="c2da305c-24a0-411d-aaae-c2c56873afdd" >
+						<logger level="INFO" doc:name="Logger" doc:id="544a5978-d233-4bdd-8753-2ef8fff6f69f" message="Bad request" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="4bb5789d-e919-4bbb-8d97-7552a99d8ff2" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="APIKIT:METHOD_NOT_ALLOWED" doc:id="e2198038-c4e3-47d2-9bf2-04d5e05456e1" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="187b9aba-7484-4c8a-9cd7-a48c420960c7" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:METHOD_NOT_ALLOWED" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="c914610f-5b7c-4e56-8488-ba2b3abccfc6" >
+				<flow-ref doc:name="Flow Reference" doc:id="36586345-7099-4805-b4ae-39daf20e437b" name="payments-order-prc-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1911cd15-3af7-4a36-86ab-951f1ae8e442" >
+						<logger level="INFO" doc:name="Logger" doc:id="15f73d49-fa65-4a5f-ba9e-63a45b8c954d" message="Bad request" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="c850bfaa-4e00-41e4-9f8d-396b1f21f226" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="APIKIT:NOT_ACCEPTABLE" doc:id="bfeffe66-f481-43a7-9fc5-0e133dcf8655" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="495fb3b4-e5d7-4f05-9e4b-ad7a27e222e1" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="3dba626c-240b-4777-89d0-f29def1e2f08" >
+				<flow-ref doc:name="Flow Reference" doc:id="4308c277-f4a5-428b-9374-d1c65734cf87" name="payments-order-prc-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="0abc04d3-bccf-4afe-8c80-1684f5544299" >
+						<logger level="INFO" doc:name="Logger" doc:id="cb54d4e8-eb9d-40cc-b425-11baec3291f8" message="Bad request" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="7e325f53-b6a8-435b-b254-a1e1f5e904e7" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="APIKIT:UNSUPPORTED_MEDIA_TYPE" doc:id="832bed40-aed7-4691-95dd-6f9bfe5ef9ee" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="94516ccb-d112-4cb5-a113-45eb84fcb54f" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:UNSUPPORTED_MEDIA_TYPE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="a9b9b333-4fe5-41c6-af97-4bd34ef30692" >
+				<flow-ref doc:name="Flow Reference" doc:id="4ae3c955-9adb-4325-b770-19fc13e89c86" name="payments-order-prc-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f9b1020f-bb01-425a-a4d2-3f0ac39d6de9" >
+						<logger level="INFO" doc:name="Logger" doc:id="f6a6b47f-191f-469a-a6d2-c2d5aaec2b12" message="Bad request" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="3bb0f0c5-0c1c-4b2e-a943-3ef9ce55d2b8" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="APIKIT:NOT_IMPLEMENTED" doc:id="ddfbcdfd-aaf7-447c-86c8-a67b3ca7959b" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="d647787c-aad8-4f38-a035-ad7e9fdfe378" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_IMPLEMENTED" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="0ce462f8-f979-41a3-9c2b-6d44213c4784" >
+				<flow-ref doc:name="Flow Reference" doc:id="82836450-d22b-4c72-908e-fcb342473bbd" name="payments-order-prc-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="c148bdaf-3cd0-4001-abce-ccd843ef6fb5" >
+						<logger level="INFO" doc:name="Logger" doc:id="3960c130-ffe5-4ab2-9eab-4f9f213308f9" message="Bad request" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="bd398dd4-ee05-4021-98b8-a4a275374816" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="APIKIT:ANY" doc:id="410e4227-0091-413a-ac48-03ce26da002e" expectedErrorType="ANY">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="03e4aca0-07ef-443a-a67b-cb56cb45e643" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="2e62502f-b00c-4eb6-abef-095b56e86b79" >
+				<flow-ref doc:name="Flow Reference" doc:id="f3f2a52a-8f48-47ae-9274-a4d213528ae6" name="payments-order-prc-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="c95ae959-aa30-461c-80b8-ef52e0530bd2" type="ANY">
+						<logger level="INFO" doc:name="Logger" doc:id="af170ab7-96d0-4372-9333-c157c2a4577e" message="ANY" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="ae2e7b7d-2856-4af3-8d7c-10fefac08264" processor="apikit:router" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

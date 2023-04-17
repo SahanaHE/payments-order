@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:accelerator-banking="http://www.mulesoft.org/schema/mule/accelerator-banking" xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd  http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd  http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd http://www.mulesoft.org/schema/mule/accelerator-banking http://www.mulesoft.org/schema/mule/accelerator-banking/current/mule-accelerator-banking.xsd">
+    <global-property doc:name="global-property-mule.env" doc:id="5c2b8274-6ce1-448e-911c-c1cb9380cc74" name="mule.env" value="local" />
+    <global-property doc:name="global-property-mule.key" doc:id="632b3e28-0a3e-41b6-880e-c39997aafdde" name="mule.key" value="Salesforce123456" />
+    <configuration-properties doc:name="configuration-properties" doc:id="f73ca0e3-eec6-46f2-9f5c-78a963e29050" file="config/config.yaml" />
+    <configuration-properties doc:name="configuration-properties-env" doc:id="4c53451b-2aa3-4b30-8419-213d042cec64" file="config/config-${mule.env}.yaml" />
+    <secure-properties:config name="configuration-properties-secured-env" doc:name="configuration-properties-secured-env" doc:id="d76480d5-e974-413d-be42-3a2871214a49" file="config/config-secured-${mule.env}.yaml" key="${mule.key}" />
+    <import doc:name="import-global-common.xml" doc:id="834c1759-365c-4bd0-80ac-49d2e4d99741" file="global-common.xml" />
+    <import doc:name="import-common-error-handler.xml" doc:id="26c5e93d-5bf0-4f6d-b39f-79c4b04b3792" file="common-error-handler.xml" />
+    <apikit:config name="payments-order-config" api="resource::org.mule.examples:fins-bian-paymntorder-prc-api-spec:10.0.0:oas:zip:fins-bian-paymntorder-prc-api-spec.yaml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <!-- <api-gateway:autodiscovery apiId="${api.autodiscoveryID}" ignoreBasePath="true" 
+		doc:name="API Autodiscovery" doc:id="99974e38-99ca-4e39-8a14-f8451597b96d" 
+		flowRef="mainflow" /> -->
+
+     <http:listener-config name="payments-order-httpListenerConfig">
+        <http:listener-connection host="${https.host}" port="${https.port}" protocol="HTTPS" tlsContext="common-selfsigned_tlsContext" />
+    </http:listener-config>
+	<http:request-config name="financial-institutions-sys-httpRequestConfig" doc:name="HTTP Request configuration" doc:id="9dea29ae-b3a7-4513-8d6f-c813de4cb3b1" basePath="/api" >
+   		<http:request-connection protocol="HTTPS" host="${financial-institutions-sys-api.host}" port="${financial-institutions-sys-api.port}" connectionIdleTimeout="${financial-institutions-sys-api.connection-idle-timeout}">
+            <reconnection>
+                <reconnect frequency="${financial-institutions-sys-api.http-frequency}" count="${financial-institutions-sys-api.http-reconnection-attempts}" />
+            </reconnection>
+            <http:authentication>
+                <http:basic-authentication username="${fins-payments-order-prc-api.http-client.client-id}" password="${fins-payments-order-prc-api.http-client.client-secret}" />
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+    <http:request-config name="payments-router-prc-httpRequestConfig" doc:name="HTTP Request configuration" doc:id="c9fe7995-8b79-42d6-beec-86e032adb66e" basePath="/api" >
+   		<http:request-connection protocol="HTTPS" host="${payments-router-prc-api.host}" port="${payments-router-prc-api.port}" connectionIdleTimeout="${payments-router-prc-api.connection-idle-timeout}">
+            <http:authentication>
+                <http:basic-authentication username="Devalapalli" password="Haritha7993*" />
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+	<http:request-config name="payments-interbankintl-prc-httpRequestConfig" doc:name="HTTP Request configuration" doc:id="f4885cc3-66b3-4314-8229-9760f85f0f24" basePath="/api" >
+   		<http:request-connection protocol="HTTPS" host="${payments-interbankintl-prc-api.host}" port="${payments-interbankintl-prc-api.port}" connectionIdleTimeout="${payments-interbankintl-prc-api.connection-idle-timeout}">
+            <reconnection>
+                <reconnect frequency="${payments-interbankintl-prc-api.http-frequency}" count="${payments-interbankintl-prc-api.http-reconnection-attempts}" />
+            </reconnection>
+            <http:authentication>
+                <http:basic-authentication username="${fins-payments-order-prc-api.http-client.client-id}" password="${fins-payments-order-prc-api.http-client.client-secret}" />
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+    <http:request-config name="payments-intrabankintl-prc-httpRequestConfig" doc:name="HTTP Request configuration" doc:id="b98d8ee3-0e55-47f2-80a3-4b81ac34203e" basePath="/api" >
+   		<http:request-connection protocol="HTTPS" host="${payments-intrabankintl-prc-api.host}" port="${payments-intrabankintl-prc-api.port}" connectionIdleTimeout="${payments-intrabankintl-prc-api.connection-idle-timeout}">
+            <reconnection>
+                <reconnect frequency="${payments-intrabankintl-prc-api.http-frequency}" count="${payments-intrabankintl-prc-api.http-reconnection-attempts}" />
+            </reconnection>
+            <http:authentication>
+                <http:basic-authentication username="${fins-payments-order-prc-api.http-client.client-id}" password="${fins-payments-order-prc-api.http-client.client-secret}" />
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+    <http:request-config name="payments-intrabanknatl-prc-httpRequestConfig" doc:name="HTTP Request configuration" doc:id="1e4738d8-7ffe-408e-8ae3-f1cbea44f116" basePath="/api" >
+   		<http:request-connection protocol="HTTPS" host="${payments-intrabanknatl-prc-api.host}" port="${payments-intrabanknatl-prc-api.port}" connectionIdleTimeout="${payments-intrabanknatl-prc-api.connection-idle-timeout}">
+            <reconnection>
+                <reconnect frequency="${payments-intrabanknatl-prc-api.http-frequency}" count="${payments-intrabanknatl-prc-api.http-reconnection-attempts}" />
+            </reconnection>
+            <http:authentication>
+                <http:basic-authentication username="${fins-payments-order-prc-api.http-client.client-id}" password="${fins-payments-order-prc-api.http-client.client-secret}" />
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+    <http:request-config name="payments-interbanknatl-prc-httpRequestConfig" doc:name="HTTP Request configuration" doc:id="a173225b-bdb9-49db-9895-8de8c2f4c234" basePath="/api" >
+   		<http:request-connection protocol="HTTPS" host="${payments-interbanknatl-prc-api.host}" port="${payments-interbanknatl-prc-api.port}" connectionIdleTimeout="${payments-interbanknatl-prc-api.connection-idle-timeout}">
+            <reconnection>
+                <reconnect frequency="${payments-interbanknatl-prc-api.http-frequency}" count="${payments-interbanknatl-prc-api.http-reconnection-attempts}" />
+            </reconnection>
+            <http:authentication>
+                <http:basic-authentication username="${fins-payments-order-prc-api.http-client.client-id}" password="${fins-payments-order-prc-api.http-client.client-secret}" />
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+    <http:request-config name="payments-remittances-prc-httpRequestConfig" doc:name="HTTP Request configuration" doc:id="b5b283d3-e7dc-4bab-b334-b7f07b8cdf5f" basePath="/api" >
+   		<http:request-connection protocol="HTTPS" host="${payments-remittances-prc-api.host}" port="${payments-remittances-prc-api.port}" connectionIdleTimeout="${payments-remittances-prc-api.connection-idle-timeout}">
+            <reconnection>
+                <reconnect frequency="${payments-remittances-prc-api.http-frequency}" count="${payments-remittances-prc-api.http-reconnection-attempts}" />
+            </reconnection>
+            <http:authentication>
+                <http:basic-authentication username="${fins-payments-order-prc-api.http-client.client-id}" password="${fins-payments-order-prc-api.http-client.client-secret}" />
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+   <accelerator-banking:config name="accelerator-banking-config" doc:name="Accelerator Banking Config" doc:id="0e6a2bd0-7837-43f4-842e-226e7ad24a15" apiName="${api.name}" apiVersion="${api.version}" />
+</mule>

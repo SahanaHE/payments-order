@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="ping-test-suite.xml" />
+	<munit:test name="ping-test-suite_getHealthTest" doc:id="b18c922a-24da-4ea1-b61c-a4a6530870f3" description="Get Health Test">
+		<munit:execution >
+			<flow-ref doc:name="ping_get-health" doc:id="52bbc12f-2638-4fb4-b55b-be63d95ccb33" name="ping_get-health"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-equals doc:name="Assert 200 Response" doc:id="ef89477a-72f2-4ef2-bb0c-8bccecea1bff" actual="#[vars.httpStatus]" expected="200" message="Expected success response"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite_getHealthWithDependenciesTest" doc:id="c2df6d0c-f751-4296-8b35-9922afcea8a7" description="Get Health With Dependencies Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Get Ping" doc:id="e4554f5c-94dc-4638-9d89-e2fdb97b33bb" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Query Param" doc:id="2ce99ac3-026c-436d-959b-b871ec0702c7" >
+				<munit:attributes value='#[{ queryParams: { checkDependencies: "true" }}]' />
+			</munit:set-event>
+			<flow-ref doc:name="ping_get-health" doc:id="7e58da1f-dcb7-4f0c-ac28-20bc86cff0a0" name="ping_get-health"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-equals doc:name="Assert 200 Response" doc:id="b5fc2dac-e371-4714-bd86-d5db640be316" actual="#[vars.httpStatus]" expected="200" message="Expected success response"/>
+			<munit-tools:assert-that doc:name="Assert Has Dependencies" doc:id="c52826ed-02f6-425a-b6b9-a79a3138c79f" expression="#[payload.dependencies]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite_getHealthBadParamTest" doc:id="96a75b3a-6f2c-4e66-b8bd-c7b943b59a71" description="Get Health Bad Param Test">
+		<munit:execution >
+			<munit:set-event doc:name="Set Query Param" doc:id="04819e78-7be1-4983-8420-ab99b33f654e" >
+				<munit:attributes value='#[{ queryParams: { checkDependencies: "true-ish" }}]' />
+			</munit:set-event>
+			<flow-ref doc:name="ping_get-health" doc:id="413d5835-15d6-45b7-8bd4-ff3a64cc8679" name="ping_get-health"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-equals doc:name="Assert 200 Response" doc:id="0c93c020-2bd4-463a-938c-13288f5e937e" actual="#[vars.httpStatus]" expected="200" message="Expected success response"/>
+			<munit-tools:assert-that doc:name="Assert No Dependencies" doc:id="715c025f-ad66-4df6-b09a-e41017e092fd" expression="#[payload.dependencies]" is="#[MunitTools::nullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-router-prc-apiTest" doc:id="3ac84d88-97e7-48b5-af40-3527f3af650c" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="6e520fe7-8407-4404-af13-3e40d29b29c1" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="91250504-fbef-47aa-8343-8356c3f179ae" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="payments-router-prc-httpRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:GATEWAY_TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-router-prc-api" doc:id="96173ffc-2778-4a16-a02b-a439124a6285" name="ping_check-dependency-payments-router-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="1fe709e8-c8d3-4878-a933-c6af77d23a6a" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="91250504-fbef-47aa-8343-8356c3f179ae" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-router-prc-apiTest1" doc:id="1f01009b-3df9-456c-873d-eba14ccb4cea" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="9cb22783-0bfe-40f0-b8f4-cfe526205f76" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="91250504-fbef-47aa-8343-8356c3f179ae" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="payments-router-prc-httpRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-router-prc-api" doc:id="bf40c64f-60f2-47e9-ab64-d09e91064ed4" name="ping_check-dependency-payments-router-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="a9c36bf6-a0ed-47d5-ac66-5270493a2727" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="91250504-fbef-47aa-8343-8356c3f179ae" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-financial-institutions-sys-apiTest" doc:id="2877d394-04ef-4e01-95f1-45782ed14540" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="ac224f5b-af1f-422a-8917-2f54296beca6" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions sys api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="852597f1-46f0-477c-99bd-bc4513571804" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:GATEWAY_TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-financial-institutions-sys-api" doc:id="d7ba7a61-6c00-4a9b-b39c-18ab47306403" name="ping_check-dependency-financial-institutions-sys-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="dce3ff6d-6393-4289-8ca4-a17fb6ec6a9c" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions sys api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="852597f1-46f0-477c-99bd-bc4513571804" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-financial-institutions-sys-apiTest1" doc:id="8f784650-de76-4522-904b-4a66c93839d6" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f8600eb1-e4fe-4721-809a-87090b597033" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions sys api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="852597f1-46f0-477c-99bd-bc4513571804" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-financial-institutions-sys-api" doc:id="06bdb7e4-a3b9-4540-8c53-d2f977694217" name="ping_check-dependency-financial-institutions-sys-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="e510e2ab-fc04-4cce-a6ef-cadbe91c7cba" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions sys api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="852597f1-46f0-477c-99bd-bc4513571804" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-remittances-prc-apiTest" doc:id="40d61647-e19d-4ed7-ac4e-fce07053a116" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="da655e73-06ff-4312-8986-f7fe34efba93" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments remittances prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9abeb21d-d7f8-43a4-913b-265cfa293f79" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:GATEWAY_TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-remittances-prc-api" doc:id="d0d103c0-7ce8-40f3-92f9-0073c605f85a" name="ping_check-dependency-payments-remittances-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="db6527d0-2ef7-481a-a194-dc623055f00f" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments remittances prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9abeb21d-d7f8-43a4-913b-265cfa293f79" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-remittances-prc-apiTest1" doc:id="d5466992-8747-41af-bae1-bbca90984535" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="6b95d249-3290-4340-ad9f-2e1fb18e63c2" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments remittances prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9abeb21d-d7f8-43a4-913b-265cfa293f79" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-remittances-prc-api" doc:id="99266010-15fc-4858-9b2c-282f1c98108e" name="ping_check-dependency-payments-remittances-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="ec4be80d-c6d4-4667-8223-8e302b208c4b" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments remittances prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9abeb21d-d7f8-43a4-913b-265cfa293f79" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-intrabanknatl-prc-apiTest" doc:id="766a4fa8-09ae-46ea-a5d9-2448fb26b6b4" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="b3e5a278-0ebc-4ed1-9b3b-27a6246a5089" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments intrabanknatl prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="36e4cbe2-e584-474a-986d-25aac3d3a5b8" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:GATEWAY_TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-intrabanknatl-prc-api" doc:id="a841979b-1fd3-429d-9a87-a5291f9548e4" name="ping_check-dependency-payments-intrabanknatl-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="58ece9b2-f1b3-4e2c-af02-bccf723746b3" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments intrabanknatl prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="36e4cbe2-e584-474a-986d-25aac3d3a5b8" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-intrabanknatl-prc-apiTest1" doc:id="d06e2d81-8ef1-498b-8759-cd3f6ddefbdb" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="51081245-ba77-4007-9481-508b3382d468" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments intrabanknatl prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="36e4cbe2-e584-474a-986d-25aac3d3a5b8" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-intrabanknatl-prc-api" doc:id="2b9c06a1-9a64-4472-b370-ce6e3019cdaa" name="ping_check-dependency-payments-intrabanknatl-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="8d892890-1ed9-463a-bc29-b07a067db899" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments intrabanknatl prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="36e4cbe2-e584-474a-986d-25aac3d3a5b8" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-intrabankintl-prc-apiTest" doc:id="d22be142-bfaf-4ad9-bff8-13d85723a2b9" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="7d7e7ed8-18fa-460f-bddb-71f590447b03" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ping payments intra bank intl process request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="dae73fcd-0f63-4aeb-9c40-fa5fa255eba0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:GATEWAY_TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-intrabankintl-prc-api" doc:id="010b21c1-551d-4216-ad9a-e9194556ab10" name="ping_check-dependency-payments-intrabankintl-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="7fdf5572-1c10-47fb-94f1-4a660d5992ac" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ping payments intra bank intl process request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="dae73fcd-0f63-4aeb-9c40-fa5fa255eba0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-intrabankintl-prc-apiTest1" doc:id="7b17ae9a-c429-4af2-a2f9-32924f27a988" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="feb67c1a-c131-4dcb-86bc-a46f2692bf80" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ping payments intra bank intl process request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="dae73fcd-0f63-4aeb-9c40-fa5fa255eba0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-intrabankintl-prc-api" doc:id="a0e7ece1-86a8-435b-bed6-d1b716227af7" name="ping_check-dependency-payments-intrabankintl-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="66686458-ac75-411f-b9cb-01f23fbec7c6" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ping payments intra bank intl process request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="dae73fcd-0f63-4aeb-9c40-fa5fa255eba0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-interbanknatl-prc-apiTest" doc:id="38b52969-6de5-4606-9721-044dd266f3d6" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f7727fce-1c78-40f9-923b-0db2a150a077" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments interbanknatl prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="532ecb31-aa63-4cbf-9acb-8408301d8070" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:GATEWAY_TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-interbanknatl-prc-api" doc:id="eb48298a-d9a2-4ced-bb62-5af6c8d9b6ae" name="ping_check-dependency-payments-interbanknatl-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="7d9c91a5-0710-437b-8ed6-34789bb125bf" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments interbanknatl prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="532ecb31-aa63-4cbf-9acb-8408301d8070" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-interbanknatl-prc-apiTest1" doc:id="b865278a-40a8-47c8-b57f-5ac5919181fc" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="d46c7a79-5339-4345-85eb-ba61a54d3fd9" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments interbanknatl prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="532ecb31-aa63-4cbf-9acb-8408301d8070" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-interbanknatl-prc-api" doc:id="71ddf50e-a1f4-414f-8c12-fd0ef80d63c6" name="ping_check-dependency-payments-interbanknatl-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="4f893147-4598-4a34-aa1f-caf074217a2f" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments interbanknatl prc api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="532ecb31-aa63-4cbf-9acb-8408301d8070" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-interbankintl-prc-apiTest" doc:id="b3c38456-aa6f-4673-960a-ff922e283303" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="949857bc-3bcf-4126-8b7c-f0f220a09705" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments interbankintl prc-api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="3cd473b7-1c4c-4379-8ad8-018137e8b17b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:GATEWAY_TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-interbankintl-prc-api" doc:id="1892d57c-a436-4418-937d-14a70216d0c1" name="ping_check-dependency-payments-interbankintl-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="eb32a3f2-c5c5-412d-b2e6-87e2f009d244" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments interbankintl prc-api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="3cd473b7-1c4c-4379-8ad8-018137e8b17b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="ping-test-suite-ping_check-dependency-payments-interbankintl-prc-apiTest1" doc:id="37dc91ab-aaf5-4997-9cde-8892381646fd" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="55ce3307-0415-47d1-8f41-aba8ccd66b20" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments interbankintl prc-api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="3cd473b7-1c4c-4379-8ad8-018137e8b17b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to ping_check-dependency-payments-interbankintl-prc-api" doc:id="5856a12a-35d3-4ad8-b17d-fb9f53ce1eb2" name="ping_check-dependency-payments-interbankintl-prc-api"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="22d27a2e-1e4a-42df-b9db-be94ec28c151" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments interbankintl prc-api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="3cd473b7-1c4c-4379-8ad8-018137e8b17b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+</mule>

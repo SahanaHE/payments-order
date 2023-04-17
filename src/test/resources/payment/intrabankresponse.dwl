@@ -1,0 +1,6 @@
+{
+  "PaymentExecutionProcedure": {
+    "ACHAccessServiceSessionReference": {},
+    "CorrespondentServiceSessionReference": {}
+  }
+}

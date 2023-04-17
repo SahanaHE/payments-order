@@ -1,0 +1,94 @@
+# API specification
+api:
+  autodiscoveryID: "00000000"
+  
+# Listener configuration
+https:
+  host: "0.0.0.0"
+  port: "8082"
+       
+#API Configurations
+fins-payments-order-prc-api:   
+  http-listener:
+    path: "/api/*"
+  http-client:
+      client-id:  "Client Id overridden at deploy time"  
+      client-secret: "Client secret overridden at deploy time"
+      
+
+# FINS Payments Inter Bank International Process API Request Configuration
+payments-interbankintl-prc-api:
+  host: "payments-interbankintl-prc-api-v1-prd.us-e1.cloudhub.io"
+  port: "443"
+  base-path: "/api"
+  ping-path: "/ping"
+  response-timeout: "60000"
+  connection-idle-timeout: "3000"
+  http-frequency: "5000"
+  http-reconnection-attempts: "2"
+
+# FINS Payments Intra Bank International Process API Request Configuration
+payments-intrabankintl-prc-api:
+  host: "payments-intrabankintl-prc-api-v1-prd.us-e1.cloudhub.io"
+  port: "443"
+  base-path: "/api"
+  ping-path: "/ping"
+  response-timeout: "60000"
+  connection-idle-timeout: "3000"
+  http-frequency: "5000"
+  http-reconnection-attempts: "2"
+  
+# FINS Payments Inter Bank National Process API Request Configuration
+payments-interbanknatl-prc-api:
+  host: "payments-interbanknatl-prc-api-v1-prd.us-e1.cloudhub.io"
+  port: "443"
+  base-path: "/api"
+  ping-path: "/ping"
+  response-timeout: "60000"
+  connection-idle-timeout: "3000"
+  http-frequency: "5000"
+  http-reconnection-attempts: "2"
+
+# FINS Payments Intra Bank National Process API Request Configuration
+payments-intrabanknatl-prc-api:
+  host: "payments-intrabanknatl-prc-api-v1-prd.us-e1.cloudhub.io"
+  port: "443"
+  base-path: "/api"
+  ping-path: "/ping"
+  response-timeout: "60000"
+  connection-idle-timeout: "3000"
+  http-frequency: "5000"
+  http-reconnection-attempts: "2"
+
+# FINS Payments ACH System API Request Configuration
+payments-remittances-prc-api:
+  host: "payments-remittances-prc-api-v1-prd.us-e1.cloudhub.io"
+  port: "443"
+  base-path: "/api"
+  ping-path: "/ping"
+  response-timeout: "60000"
+  connection-idle-timeout: "3000"
+  http-frequency: "5000"
+  http-reconnection-attempts: "2"
+
+# FINS Financial Institutions System API Request Configuration
+financial-institutions-sys-api:
+  host: "financial-institutions-sys-api-v1-prd.us-e1.cloudhub.io"
+  port: "443"
+  base-path: "/api"
+  ping-path: "/ping"
+  response-timeout: "60000"
+  connection-idle-timeout: "3000"
+  http-frequency: "5000"
+  http-reconnection-attempts: "2"
+
+# Fins Payments Router Process API Request Configuration
+payments-router-prc-api:
+  host: "payments-router-prc-api-v1-prd.us-e1.cloudhub.io"
+  port: "443"
+  base-path: "/api"
+  ping-path: "/ping"
+  response-timeout: "60000"
+  connection-idle-timeout: "3000"
+  http-frequency: "5000"
+  http-reconnection-attempts: "2"

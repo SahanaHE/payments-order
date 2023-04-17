@@ -1,0 +1,24 @@
+%dw 2.0
+
+type auto_506c4585_11c9_4bcd_8643_5c2038e75f2e_Input_Payload = {
+  PaymentOrderProcedure?: {
+    PayeeProductInstanceReference?: { _?: Any }, 
+    Amount?: String, 
+    ProductType?: String, 
+    PaymentMechanismType?: String, 
+    PayerBankReference?: { _?: Any }, 
+    PayeeReference?: { _?: Any }, 
+    PayerReference?: { _?: Any }, 
+    PaymentTransactionInitiatorReference?: { _?: Any }, 
+    PayeeBankReference?: { _?: Any }, 
+    Currency?: String, 
+    SettlementInstructions?: String, 
+    PayerProductInstanceReference?: { _?: Any }, 
+    PaymentInstructions?: String, 
+    InterestedParties?: String, 
+    DateType?: String, 
+    _?: Any
+  }, 
+  _?: Any
+}
+

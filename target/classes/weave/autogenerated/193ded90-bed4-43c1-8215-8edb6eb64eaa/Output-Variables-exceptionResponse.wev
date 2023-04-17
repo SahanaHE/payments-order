@@ -1,0 +1,47 @@
+%dw 2.0
+
+type auto_193ded90_bed4_43c1_8215_8edb6eb64eaa_Output_Variables_exceptionResponse = {|
+  errorCode: Number, 
+  errorMessage: org_mule_runtime_api_metadata_TypedValue | String | Null, 
+  transactionId: String, 
+  timeStamp: DateTime, 
+  causedBy: Null
+|}
+type org_mule_runtime_api_metadata_TypedValue = {|
+  byteLength?: java_util_OptionalLong, 
+  dataType?: org_mule_runtime_api_metadata_DataType, 
+  length?: java_util_Optional, 
+  value?: java_lang_Object
+|} {"typeId": "org.mule.runtime.api.metadata.TypedValue"}
+type org_mule_runtime_api_metadata_DataType = {|
+  mediaType?: org_mule_runtime_api_metadata_MediaType, 
+  streamType?: Boolean {"typeId": "boolean"}, 
+  "type"?: String
+|} {"typeId": "org.mule.runtime.api.metadata.DataType"}
+type org_mule_runtime_api_metadata_MediaType = {|
+  charset?: java_util_Optional, 
+  definedInApp?: Boolean {"typeId": "boolean"}, 
+  primaryType?: String, 
+  subType?: String
+|} {"typeId": "org.mule.runtime.api.metadata.MediaType"}
+type java_util_Optional = java_util_Optional
+
+
+
+
+
+
+type java_lang_Object = {|  |} {"class": "java.lang.Object",
+"typeId": "java.lang.Object"}
+
+
+type java_util_OptionalLong = {|
+  asLong?: Number, 
+  empty?: Boolean {"typeId": "boolean"}, 
+  present?: Boolean {"typeId": "boolean"}
+|} {"typeId": "java.util.OptionalLong"}
+
+
+
+
+

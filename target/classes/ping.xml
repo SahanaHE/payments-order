@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="ping_get-health" doc:id="7c8ce4ef-31e6-4714-b002-1dbd2f89c02e" >
+		<set-variable value='#[attributes.queryParams.checkDependencies == "true" default false]' doc:name="checkDependencies" doc:id="2036a0fb-689d-4fe6-bfbb-e3bdf61d84e4" variableName="checkDependencies"/>
+		<choice doc:name="Choice" doc:id="c7f38934-3f44-40de-b65f-e0ad399e5b7f" >
+			<when expression="#[vars.checkDependencies]">
+				<flow-ref doc:name="Check Dependencies" doc:id="067068fd-24f5-4416-a79a-94e7ad5def3b" name="ping_check-dependencies" target="dependencyList"/>
+			</when>
+			<otherwise>
+				<set-variable doc:name="dependencyList" doc:id="a7d513c3-49f2-4b6a-b1b8-4deb0eb82611" variableName="dependencyList" value="#[null]"/>
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="Map Response" doc:id="e7fb9656-5d9b-4a2e-8804-ad88036dc1b8">
+			<ee:message>
+				<ee:set-payload resource="dwl/ping-check-dependency-response.dwl" />
+			</ee:message>
+		</ee:transform>
+		<set-variable value="200" doc:name="httpStatus" doc:id="7361d227-08b5-4c9a-8746-907c54bcd5d4" variableName="httpStatus"/>
+	</sub-flow>
+	<sub-flow name="ping_check-dependencies" doc:id="bfab46ac-1d9c-4308-b96d-c45a5deb5df2" >
+		<scatter-gather doc:name="Check Dependencies" doc:id="9757c2ce-b2f3-473a-8f95-4c0f27ea9873" >
+			<route >
+				<flow-ref doc:name="ping_check-dependency-payments-interbanknatl-prc-api" doc:id="fad5ec2e-f141-48ae-bf29-04fe68840f01" name="ping_check-dependency-payments-interbanknatl-prc-api"/>
+			</route>
+			<route >
+				<flow-ref doc:name="ping_check-dependency-payments-interbankintl-prc-api" doc:id="1ca91b9f-ca85-4ca9-a092-839ee71c7b6c" name="ping_check-dependency-payments-interbankintl-prc-api"/>
+			</route>
+			<route >
+				<flow-ref doc:name="ping_check-dependency-payments-interbankintl-prc-api" doc:id="1ece2a36-e865-4102-bcff-5fdf847c42f4" name="ping_check-dependency-payments-intrabankintl-prc-api"/>
+			</route>
+			<route >
+				<flow-ref doc:name="ping_check-dependency-payments-interbankintl-prc-api" doc:id="7e741341-1c5f-458d-82ea-b741674d09a0" name="ping_check-dependency-payments-intrabanknatl-prc-api"/>
+			</route>
+			<route >
+				<flow-ref doc:name="ping_check-dependency-payments-router-prc-api" doc:id="72778062-6304-4fbc-9361-5fe30a4e5d33" name="ping_check-dependency-payments-router-prc-api"/>
+			</route>
+			<route >
+				<flow-ref doc:name="ping_check-dependency-payments-remittances-prc-api" doc:id="375cb070-a2e9-4200-8623-fedbe98eb633" name="ping_check-dependency-payments-remittances-prc-api"/>
+			</route>
+			<route >
+				<flow-ref doc:name="ping_check-dependency-payments-remittances-prc-api" doc:id="1622ffa0-191e-466a-bd0e-789ac666b8d6" name="ping_check-dependency-financial-institutions-sys-api"/>
+			</route>
+		</scatter-gather>
+	</sub-flow>
+	<sub-flow name="ping_check-dependency-payments-interbankintl-prc-api" doc:id="8cd4d820-2b38-41c9-83f5-002ec2258722" >
+		<set-variable value="#[p('payments-interbankintl-prc-api.host')]" doc:name="sysCheckHost" doc:id="725ea36c-f15e-4391-ac7a-ac5e94beaebb" variableName="sysCheckHost" />
+		<try doc:name="Try" doc:id="c7bceeb0-528a-4238-a767-d0518ac18c48" >
+			<http:request method="GET" doc:name="payments interbankintl prc-api request" doc:id="3cd473b7-1c4c-4379-8ad8-018137e8b17b" config-ref="payments-interbankintl-prc-httpRequestConfig" path="/ping" sendCorrelationId="ALWAYS" correlationId="#[correlationId]" />
+			<set-variable value="#['UP']" doc:name="backendSystemStatus" doc:id="bd3eb02d-0e1e-4aad-a617-7ba8ca05f597" variableName="backendSystemStatus" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="16bc6e67-058d-4d1a-85c9-b6831f8c5fcb" type="HTTP:GATEWAY_TIMEOUT, HTTP:TIMEOUT" >
+					<set-variable value="#['DOWN']" doc:name="backendSystemStatus" doc:id="df7b14d5-abee-44ba-b93a-c14d794dd129" variableName="backendSystemStatus" />
+				</on-error-continue>
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="e9c7ae13-0321-4999-8cc5-00e10f902810" >
+					<set-variable value="#['ERROR']" doc:name="backendSystemStatus" doc:id="485bc472-7936-44e3-8e4d-bba746bd62e5" variableName="backendSystemStatus" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="Dependency Status Response" doc:id="6192de10-e506-4fc2-bdb5-3dac8725ea96" >
+			<ee:message >
+				<ee:set-payload resource="dwl/ping-check-dependency-sys-api-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="ping_check-dependency-payments-interbanknatl-prc-api" doc:id="af651080-dee0-4b8a-b1b1-ac71e4284807" >
+		<set-variable value="#[p('payments-interbanknatl-prc-api.host')]" doc:name="sysCheckHost" doc:id="72562a15-2430-481a-8075-f0f0d51d2535" variableName="sysCheckHost" />
+		<try doc:name="Try" doc:id="0080dac5-494c-4357-866c-5aece13714b5" >
+			<http:request method="GET" doc:name="payments interbanknatl prc api request" doc:id="532ecb31-aa63-4cbf-9acb-8408301d8070" config-ref="payments-interbanknatl-prc-httpRequestConfig" path="/ping" sendCorrelationId="ALWAYS" correlationId="#[correlationId]" />
+			<set-variable value="#['UP']" doc:name="backendSystemStatus" doc:id="90e6be7d-354e-4935-b571-39c8836013cf" variableName="backendSystemStatus" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="3cf78260-e74f-445b-803a-bbc492825179" type="HTTP:GATEWAY_TIMEOUT, HTTP:TIMEOUT" >
+					<set-variable value="#['DOWN']" doc:name="backendSystemStatus" doc:id="9c1d8ccb-8645-4b2e-9fa4-ecf679fb9fde" variableName="backendSystemStatus" />
+				</on-error-continue>
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="aaed26ca-879f-4049-bda7-e079210aa93d" >
+					<set-variable value="#['ERROR']" doc:name="backendSystemStatus" doc:id="bf1609c0-2ec9-4382-88ae-0d07d8fbcf98" variableName="backendSystemStatus" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="Dependency Status Response" doc:id="6ac6372a-ae21-43a4-aa11-7fc0af355096" >
+			<ee:message >
+				<ee:set-payload resource="dwl/ping-check-dependency-sys-api-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="ping_check-dependency-payments-intrabankintl-prc-api" doc:id="3c17bc1c-59c8-4a9b-822c-59ff9aa8799f" >
+		<set-variable value="#[p('payments-intrabankintl-prc-api.host')]" doc:name="sysCheckHost" doc:id="aa1119dd-e7e5-4ef5-9d1a-c1167b50f761" variableName="sysCheckHost" />
+		<try doc:name="Try" doc:id="773cd7d6-faa8-4c37-bc8f-bbb69ac06816" >
+			<http:request method="GET" doc:name="ping payments intra bank intl process request" doc:id="dae73fcd-0f63-4aeb-9c40-fa5fa255eba0" config-ref="payments-intrabankintl-prc-httpRequestConfig" path="/ping" sendCorrelationId="ALWAYS" correlationId="#[correlationId]" />
+			<set-variable value="#['UP']" doc:name="backendSystemStatus" doc:id="55814e99-ea09-4cb3-83d0-016781ca2230" variableName="backendSystemStatus" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="18a24569-651e-4344-a1f8-6599e6ff2646" type="HTTP:GATEWAY_TIMEOUT, HTTP:TIMEOUT" >
+					<set-variable value="#['DOWN']" doc:name="backendSystemStatus" doc:id="4bbbb223-8452-4ae9-9c33-e76afebbba2a" variableName="backendSystemStatus" />
+				</on-error-continue>
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6926c6e1-0fc8-49ff-9429-a63f959dc866" >
+					<set-variable value="#['ERROR']" doc:name="backendSystemStatus" doc:id="bce55b8c-c7a6-4376-9673-5ffa5b947fd0" variableName="backendSystemStatus" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="Dependency Status Response" doc:id="7a62bef2-2d19-421f-b763-734a12f7d289" >
+			<ee:message >
+				<ee:set-payload resource="dwl/ping-check-dependency-sys-api-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="ping_check-dependency-payments-intrabanknatl-prc-api" doc:id="42f00f74-8aed-4f9b-a786-658aeec39f4d" >
+		<set-variable value="#[p('payments-intrabanknatl-prc-api.host')]" doc:name="sysCheckHost" doc:id="c14a9d17-b452-409d-8ab4-722943eb0eb6" variableName="sysCheckHost" />
+		<try doc:name="Try" doc:id="f22f620b-bc61-48ef-9b97-07638cf108fa" >
+			<http:request method="GET" doc:name="payments intrabanknatl prc api request" doc:id="36e4cbe2-e584-474a-986d-25aac3d3a5b8" config-ref="payments-intrabanknatl-prc-httpRequestConfig" path="/ping" sendCorrelationId="ALWAYS" correlationId="#[correlationId]" />
+			<set-variable value="#['UP']" doc:name="backendSystemStatus" doc:id="668b7a37-cace-48b4-8ab8-ccb2f7be6b6b" variableName="backendSystemStatus" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="56144ed6-5b80-4721-9fc7-86f88f1345e0" type="HTTP:GATEWAY_TIMEOUT, HTTP:TIMEOUT" >
+					<set-variable value="#['DOWN']" doc:name="backendSystemStatus" doc:id="2487f887-039d-48c5-8adf-826e9162426f" variableName="backendSystemStatus" />
+				</on-error-continue>
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a5a08ccf-df02-4bda-868e-eee450211128" >
+					<set-variable value="#['ERROR']" doc:name="backendSystemStatus" doc:id="2f077b05-e56c-40fe-b324-db22ff7abc65" variableName="backendSystemStatus" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="Dependency Status Response" doc:id="0aa2d3a1-48d7-4f58-a70d-f088bfb8f0e8" >
+			<ee:message >
+				<ee:set-payload resource="dwl/ping-check-dependency-sys-api-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="ping_check-dependency-payments-remittances-prc-api" doc:id="6b67e051-9dc3-4d08-9132-46028f682bf6" >
+		<set-variable value="#[p('payments-remittances-prc-api.host')]" doc:name="sysCheckHost" doc:id="054acd3c-6ddc-46fc-bd5f-ddd203b6922d" variableName="sysCheckHost" />
+		<try doc:name="Try" doc:id="9d0d3c55-1799-416f-afb0-69d0d052c6e7" >
+			<http:request method="GET" doc:name="payments remittances prc api request" doc:id="9abeb21d-d7f8-43a4-913b-265cfa293f79" config-ref="payments-remittances-prc-httpRequestConfig" path="/ping" sendCorrelationId="ALWAYS" correlationId="#[correlationId]" />
+			<set-variable value="#['UP']" doc:name="backendSystemStatus" doc:id="076bad62-73e3-41c6-8a8a-005895e7ec29" variableName="backendSystemStatus" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="97b24da6-ed9b-4068-a3ee-6ca684db45e6" type="HTTP:GATEWAY_TIMEOUT, HTTP:TIMEOUT" >
+					<set-variable value="#['DOWN']" doc:name="backendSystemStatus" doc:id="be5f8c0e-05da-44b2-9c0c-cafa32f2ab73" variableName="backendSystemStatus" />
+				</on-error-continue>
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="44d3a42c-93ce-4678-b675-60402c928eb3" >
+					<set-variable value="#['ERROR']" doc:name="backendSystemStatus" doc:id="9902fdde-8f7b-4d64-aaa9-04a6705352ed" variableName="backendSystemStatus" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="Dependency Status Response" doc:id="fd8b931b-fbc6-4f1b-9c95-885f5e9004cc" >
+			<ee:message >
+				<ee:set-payload resource="dwl/ping-check-dependency-sys-api-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="ping_check-dependency-financial-institutions-sys-api" doc:id="331067e6-216e-4913-a4d8-7b93b8b4cdf5" >
+		<set-variable value="#[p('financial-institutions-sys-api.host')]" doc:name="sysCheckHost" doc:id="8f963f20-e3a7-4ce2-bc6d-c6f4f790178f" variableName="sysCheckHost" />
+		<try doc:name="Try" doc:id="bc62ddd0-e1de-4c25-bea0-8c1b5fad0216" >
+			<http:request method="GET" doc:name="financial institutions sys api request" doc:id="852597f1-46f0-477c-99bd-bc4513571804" config-ref="financial-institutions-sys-httpRequestConfig" path="/ping" sendCorrelationId="ALWAYS" correlationId="#[correlationId]" />
+			<set-variable value="#['UP']" doc:name="backendSystemStatus" doc:id="240c002c-67ca-4165-baf8-bf2613d19f71" variableName="backendSystemStatus" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9f99d0ec-50f0-4cc9-8a3a-3146dd54f7a6" type="HTTP:GATEWAY_TIMEOUT, HTTP:TIMEOUT" >
+					<set-variable value="#['DOWN']" doc:name="backendSystemStatus" doc:id="08457203-98d6-4b89-8243-5d93b0e61867" variableName="backendSystemStatus" />
+				</on-error-continue>
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1bd06836-1445-461d-8e35-5f575d6c1688" >
+					<set-variable value="#['ERROR']" doc:name="backendSystemStatus" doc:id="3c019b24-ccc4-476f-93b2-e303574505b0" variableName="backendSystemStatus" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="Dependency Status Response" doc:id="ddb2aa84-69f0-43ca-833d-616666b99973" >
+			<ee:message >
+				<ee:set-payload resource="dwl/ping-check-dependency-sys-api-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="ping_check-dependency-payments-router-prc-api" doc:id="c47991e7-6feb-4047-9d67-b7fc641b54b0" >
+		<set-variable value="#[p('payments-router-prc-api.host')]" doc:name="sysCheckHost" doc:id="34dd0675-9812-412a-b10e-0eade76c4707" variableName="sysCheckHost" />
+		<try doc:name="Try" doc:id="93637f61-0aa9-4204-84aa-44f270226b27" >
+			<http:request method="GET" doc:name="payments router prc api request" doc:id="91250504-fbef-47aa-8343-8356c3f179ae" config-ref="payments-router-prc-httpRequestConfig" path="/ping" sendCorrelationId="ALWAYS" correlationId="#[correlationId]" />
+			<set-variable value="#['UP']" doc:name="backendSystemStatus" doc:id="df1bd154-8429-4edb-ba47-186b8e14649b" variableName="backendSystemStatus" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ed71525b-8d10-4f35-9fec-26bf11b6a0b5" type="HTTP:GATEWAY_TIMEOUT, HTTP:TIMEOUT" >
+					<set-variable value="#['DOWN']" doc:name="backendSystemStatus" doc:id="0c31f31a-c932-4663-b4c6-bbffc8216762" variableName="backendSystemStatus" />
+				</on-error-continue>
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="76c0e75b-9850-4b55-97e9-bb55b32c0a43" >
+					<set-variable value="#['ERROR']" doc:name="backendSystemStatus" doc:id="5c4b3944-f0ee-4ff7-97c4-2de70bc12588" variableName="backendSystemStatus" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="Dependency Status Response" doc:id="b954ba5b-c614-4fdf-b4ef-e3687ab77cd7" >
+			<ee:message >
+				<ee:set-payload resource="dwl/ping-check-dependency-sys-api-response.dwl" />
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

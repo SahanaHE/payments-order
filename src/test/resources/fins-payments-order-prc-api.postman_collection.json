@@ -1,0 +1,755 @@
+{
+	"info": {
+		"_postman_id": "0ae51d00-a6a7-4665-a9f2-99e0279707da",
+		"name": "fins-payments-order-prc-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Query Health",
+			"item": [
+				{
+					"name": "Query Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{host-payments-order-prc-api}}/api/ping",
+							"protocol": "https",
+							"host": [
+								"{{host-payments-order-prc-api}}"
+							],
+							"path": [
+								"api",
+								"ping"
+							]
+						},
+						"description": "Call ping operation with no parameters"
+					},
+					"response": []
+				},
+				{
+					"name": "Query Health with Dependencies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{host-payments-order-prc-api}}/api/ping?checkDependencies=true",
+							"protocol": "https",
+							"host": [
+								"{{host-payments-order-prc-api}}"
+							],
+							"path": [
+								"api",
+								"ping"
+							],
+							"query": [
+								{
+									"key": "checkDependencies",
+									"value": "true",
+									"description": "Include health of dependencies"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Query Health with Invalid Parameter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{host-payments-order-prc-api}}/api/ping?checkDependencies=true-ish",
+							"protocol": "https",
+							"host": [
+								"{{host-payments-order-prc-api}}"
+							],
+							"path": [
+								"api",
+								"ping"
+							],
+							"query": [
+								{
+									"key": "checkDependencies",
+									"value": "true-ish",
+									"description": "Should not return dependencies"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment Order",
+			"item": [
+				{
+					"name": "CoreBanking Test Data",
+					"item": [
+						{
+							"name": "Post Customers with Individual",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    let internalHeaderValue = pm.response.headers.get('Location').split('/customers/')[1];\r",
+											"    console.log(\"customer1Id \" + internalHeaderValue);\r",
+											"    pm.collectionVariables.set(\"customer1Id\",internalHeaderValue);\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": null,\n\t\"partyRoleType\": \"Customer\",\n\t\"party\": [{\n\t\t\"id\": null,\n\t\t\"partyType\": \"Individual\",\n        \"salutation\": \"{{$randomNamePrefix}}\",\n\t\t\"firstName\": \"{{$randomFirstName}}\",\n        \"personName\": \"{{$randomFullName}}\",\n        \"birthDate\":\"1984-03-17\",\n\t\t\"lastName\": \"{{$randomLastName}}\",\n        \"contactPoints\":[\n    {\n        \"contactPointType\": [\n            \"ContactPointPhone\"\n        ],\n        \"id\": null,\n        \"activeFromDate\": \"2015-03-15\",\n        \"telephoneNumber\": \"{{$randomPhoneNumber}}\",\n        \"extensionNumber\": \"22444\",\n        \"formattedE164PhoneNumber\": \"+1 {{$randomPhoneNumber}}\",\n        \"formattedInternationalPhoneNumber\": \"001 {{$randomPhoneNumber}}\"\n    },\n    {\n        \"contactPointType\": [\n            \"ContactPointEmail\"\n        ],\n        \"id\": null,\n        \"activeFromDate\": \"2015-03-15\",\n        \"emailAddress\": \"{{$randomExampleEmail}}\",\n        \"emailBouncedReason\": \"test bounce\",\n        \"emailDomain\": \"{{$randomDomainName}}\",\n        \"emailMailBox\": \"spam\"\n    },\n    {\n        \"contactPointType\": [\n            \"ContactPointAddress\"\n        ],\n        \"id\": null,\n        \"activeFromDate\": \"2020-03-05\",\n        \"geoLongitude\": {{$randomLongitude}},\n        \"geoLatitude\": {{$randomLatitude}},\n        \"cityName\": \"{{$randomCity}}\",\n        \"addressLine1\": \"{{$randomStreetName}}\",\n        \"stateProvinceName\": \"TX\",\n        \"addressLine4\": \"{{$randomCity}}\",\n        \"countryName\": \"USA\"\n    }\n]\n\t}],\n\t\"externalIds\": [{\n\t\t\"id\": null,\n\t\t\"externalId\": \"{{$randomUUID}}\",\n\t\t\"externalIdType\": [\"MDM\"]\n\t}],\n\t\"customerStatus\": \"ACTIVE\",\n    \"customerNumber\":\"{{$randomBankAccountBic}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{host_core_banking_customers_sys_api}}/api/customers",
+									"protocol": "https",
+									"host": [
+										"{{host_core_banking_customers_sys_api}}"
+									],
+									"path": [
+										"api",
+										"customers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post Customers with Individual",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    let internalHeaderValue = pm.response.headers.get('Location').split('/customers/')[1];\r",
+											"    console.log(\"customer2Id \" + internalHeaderValue);\r",
+											"    pm.collectionVariables.set(\"customer2Id\",internalHeaderValue);\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": null,\n\t\"partyRoleType\": \"Customer\",\n\t\"party\": [{\n\t\t\"id\": null,\n\t\t\"partyType\": \"Individual\",\n        \"salutation\": \"{{$randomNamePrefix}}\",\n\t\t\"firstName\": \"{{$randomFirstName}}\",\n        \"personName\": \"{{$randomFullName}}\",\n        \"birthDate\":\"1984-03-17\",\n\t\t\"lastName\": \"{{$randomLastName}}\",\n        \"contactPoints\":[\n    {\n        \"contactPointType\": [\n            \"ContactPointPhone\"\n        ],\n        \"id\": null,\n        \"activeFromDate\": \"2015-03-15\",\n        \"telephoneNumber\": \"{{$randomPhoneNumber}}\",\n        \"extensionNumber\": \"22444\",\n        \"formattedE164PhoneNumber\": \"+1 {{$randomPhoneNumber}}\",\n        \"formattedInternationalPhoneNumber\": \"001 {{$randomPhoneNumber}}\"\n    },\n    {\n        \"contactPointType\": [\n            \"ContactPointEmail\"\n        ],\n        \"id\": null,\n        \"activeFromDate\": \"2015-03-15\",\n        \"emailAddress\": \"{{$randomExampleEmail}}\",\n        \"emailBouncedReason\": \"test bounce\",\n        \"emailDomain\": \"{{$randomDomainName}}\",\n        \"emailMailBox\": \"spam\"\n    },\n    {\n        \"contactPointType\": [\n            \"ContactPointAddress\"\n        ],\n        \"id\": null,\n        \"activeFromDate\": \"2020-03-05\",\n        \"geoLongitude\": {{$randomLongitude}},\n        \"geoLatitude\": {{$randomLatitude}},\n        \"cityName\": \"{{$randomCity}}\",\n        \"addressLine1\": \"{{$randomStreetName}}\",\n        \"stateProvinceName\": \"TX\",\n        \"addressLine4\": \"{{$randomCity}}\",\n        \"countryName\": \"USA\"\n    }\n]\n\t}],\n\t\"externalIds\": [{\n\t\t\"id\": null,\n\t\t\"externalId\": \"{{$randomUUID}}\",\n\t\t\"externalIdType\": [\"MDM\"]\n\t}],\n\t\"customerStatus\": \"ACTIVE\",\n    \"customerNumber\":\"{{$randomBankAccountBic}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{host_core_banking_customers_sys_api}}/api/customers",
+									"protocol": "https",
+									"host": [
+										"{{host_core_banking_customers_sys_api}}"
+									],
+									"path": [
+										"api",
+										"customers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post Accounts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"let internalHeaderValue = pm.response.headers.get('Location').split('/accounts/')[1];\r",
+											"console.log(\"debitAccountId \" + internalHeaderValue);\r",
+											"    pm.collectionVariables.set(\"debitAccountId\",internalHeaderValue);\r",
+											"    pm.variables.set(\"debitAccountId\",internalHeaderValue);\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": null,\n    \"name\": \"{{$randomFullName}}\",\n    \"accountNumber\": \"{{$randomBankAccount}}\",\n    \"accountType\": \"DepositAccount\",\n    \"depositAccountType\": \"SAVINGS\",\n    \"primaryAccountOwner\": \"{{customer1Id}}\",\n    \"accountStatus\": \"OPEN\",\n    \"accountBalance\": 15000,\n    \"availableBalance\": 15000,\n    \"accountCurrency\": \"USD\",\n    \"accountLabel\": \"Rainy Day\",\n    \"interestRate\": 0.25,\n    \"taxIdentificationNumber\": \"012345678\",\n    \"lastTransactionDate\": \"2021-06-15\",\n    \"lastTransactionType\": \"CreditTransaction\",\n    \"lastTransactionAmount\": 50.60,\n    \"lastPaymentDate\": \"2021-09-08\",\n    \"lastPaymentAmount\": 123.40,\n    \"openedDate\": \"2020-03-15\",\n    \"externalIds\": [\n        {\n            \"id\": null,\n            \"externalId\": \"{{$randomUUID}}\",\n            \"externalIdType\": [\n                \"MDM\"\n            ],\n            \"status\": \"VALID\",\n            \"statusLastChangedDate\": \"2021-11-05T18:30:35.000Z\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{host_core_banking_accounts_sys_api}}/api/accounts",
+									"protocol": "https",
+									"host": [
+										"{{host_core_banking_accounts_sys_api}}"
+									],
+									"path": [
+										"api",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post Accounts  - CreditAccountId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"let internalHeaderValue = pm.response.headers.get('Location').split('/accounts/')[1];\r",
+											"console.log(\"creditAccountId \" + internalHeaderValue);\r",
+											"    pm.collectionVariables.set(\"creditAccountId\",internalHeaderValue);\r",
+											"    pm.variables.set(\"creditAccountId\",internalHeaderValue);\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": null,\n  \"name\": \"{{$randomFullName}}\",\n  \"accountNumber\": \"{{$randomBankAccount}}\",\n  \"accountType\": \"DepositAccount\",\n  \"depositAccountType\" : \"CHECKING\",\n  \"primaryAccountOwner\": \"{{customer2Id}}\",\n  \"accountStatus\": \"OPEN\",\n  \"accountBalance\": 20000,\n  \"availableBalance\": 20000,\n  \"accountCurrency\": \"USD\",\n  \"taxIdentificationNumber\": \"012345678\",\n  \"openedDate\": \"2020-03-15\",\n  \"lastTransactionDate\": \"2021-06-15\",\n  \"lastTransactionType\": \"CreditTransaction\",\n  \"lastTransactionAmount\": 50.60,\n  \"lastPaymentDate\": \"2021-09-08\",\n  \"lastPaymentAmount\": 123.40,\n  \"externalIds\": [ {\n    \"id\": null,\n    \"externalId\": \"{{$randomUUID}}\",\n    \"externalIdType\": [ \"MDM\" ],\n    \"status\": \"VALID\",\n    \"statusLastChangedDate\": \"2020-03-15T15:03:01Z\"\n  }]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{host_core_banking_accounts_sys_api}}/api/accounts",
+									"protocol": "https",
+									"host": [
+										"{{host_core_banking_accounts_sys_api}}"
+									],
+									"path": [
+										"api",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post Transaction - Payment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    let internalHeaderValue = pm.response.headers.get('Location').split('/transactions/')[1];\r",
+											"    console.log(\"transactionId \" + internalHeaderValue);\r",
+											"    pm.collectionVariables.set(\"transactionId\",internalHeaderValue);\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": null,\n  \"name\": \"T-000000016\",\n  \"description\": \"{{$randomProductAdjective}}\",\n  \"transactionNumber\" : null,\n  \"transactionAmount\": 200,\n  \"transactionDate\": \"2020-03-15\",\n  \"paymentType\": \"CREDIT_TRANSFER\",\n  \"originatorId\": \"{{$randomUUID}}\",\n  \"debitAccountId\" : \"{{debitAccountId}}\",\n  \"creditAccountId\" : \"{{creditAccountId}}\",\n  \"transactionType\": \"PaymentTransaction\",\n  \"transactionSubType\": \"ATM\",\n  \"transactionStatus\": \"HOLD\",\n  \"transactionCurrency\": \"USD\",\n  \"exchangeCurrency\" : \"USD\",\n  \"exchangeRate\": 72.04,\n  \"vendorName\": \"A&M Records\",\n  \"notes\": \"Transaction processed\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{host_core_banking_accounts_sys_api}}/api/accounts/:accountId/transactions",
+									"protocol": "https",
+									"host": [
+										"{{host_core_banking_accounts_sys_api}}"
+									],
+									"path": [
+										"api",
+										"accounts",
+										":accountId",
+										"transactions"
+									],
+									"variable": [
+										{
+											"key": "accountId",
+											"value": "{{creditAccountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Transaction by Transaction Id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    var jsonData = JSON.parse(responseBody);\r",
+											"    let originatorId = jsonData.originatorId;\r",
+											"    console.log(\"transactionOriginatorId \" + originatorId);\r",
+											"    pm.collectionVariables.set(\"transactionOriginatorId\", originatorId);\r",
+											"    pm.variables.set(\"transactionOriginatorId\", originatorId);\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{host_core_banking_accounts_sys_api}}/api/transactions/:transactionId",
+									"protocol": "https",
+									"host": [
+										"{{host_core_banking_accounts_sys_api}}"
+									],
+									"path": [
+										"api",
+										"transactions",
+										":transactionId"
+									],
+									"variable": [
+										{
+											"key": "transactionId",
+											"value": "{{transactionId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Payment Order Procedure Initiation -SWIFT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PaymentOrderProcedure\": {\n        \"PaymentTransactionInitiatorReference\": {\n            \"ServicingSessionReference\": \"{{$guid}}\",\n            \"TransactionInstanceStatus\": \"PAYMENT_ACTIVATED\",\n            \"PaymentPurpose\": \"\",\n            \"UserID\": \"user1\"\n        },\n        \"PaymentTransactionType\": \"INTERNATIONAL_TRANSFER\",\n        \"EndToEndIdentification\": \"{{transactionOriginatorId}}\",\n        \"PaymentMechanismType\": \"Bank_SWIFT\",\n        \"CurrencyOfTransfer\": \"CAD\",\n        \"Amount\": \"USD 250\",\n        \"Currency\": \"USD\",\n        \"ExchangeCurrency\": \"CAD\",\n        \"ExchangeRate\": \"1.0\",\n        \"DateType\":\"09-22-2018\",\n        \"PayerReference\": {\n            \"CustomerID\": \"{{debitAccountId}}\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"Checking\"\n        },\n        \"PayeeReference\": {\n            \"CustomerID\": \"{{creditAccountId}}\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"Checking\"\n        },\n        \"PayerBankReference\": {\n            \"BankID\": \"BOFAUS3N\"\n        },\n        \"PayeeBankReference\": {\n            \"BankID\": \"ROYCCAT2IBO\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{host-payments-order-prc-api}}/api/PaymentOrder/Initiate",
+							"protocol": "https",
+							"host": [
+								"{{host-payments-order-prc-api}}"
+							],
+							"path": [
+								"api",
+								"PaymentOrder",
+								"Initiate"
+							]
+						},
+						"description": "Call ping operation with no parameters"
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Order Procedure Initiation - National - LOCAL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PaymentOrderProcedure\": {\n        \"PaymentTransactionInitiatorReference\": {\n            \"ServicingSessionReference\": \"{{$guid}}\",\n            \"TransactionInstanceStatus\": \"PAYMENT_ACTIVATED\",\n            \"PaymentPurpose\": \"\",\n            \"UserID\": \"user1\"\n        },\n        \"PaymentTransactionType\": \"NATIONAL_TRANSFER\",\n        \"EndToEndIdentification\": \"{{transactionOriginatorId}}\",\n        \"PaymentMechanismType\": \"LOCAL\",\n        \"CurrencyOfTransfer\": \"USD\",\n        \"Amount\": \"250\",\n        \"Currency\": \"USD\",\n        \"ExchangeCurrency\": \"USD\",\n        \"ExchangeRate\": \"1.0\",\n        \"DateType\": \"09-22-2018\",\n        \"PayerReference\": {\n            \"CustomerID\": \"{{debitAccountId}}\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"Checking\"\n        },\n        \"PayeeReference\": {\n            \"CustomerID\": \"{{creditAccountId}}\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"Checking\"\n        },\n        \"PayerBankReference\": {\n            \"BankID\": \"BOFAUS3N\"\n        },\n        \"PayeeBankReference\": {\n            \"BankID\": \"BOFAUS3N\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{host-payments-order-prc-api}}/api/PaymentOrder/Initiate",
+							"protocol": "https",
+							"host": [
+								"{{host-payments-order-prc-api}}"
+							],
+							"path": [
+								"api",
+								"PaymentOrder",
+								"Initiate"
+							]
+						},
+						"description": "Call ping operation with no parameters"
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Order Procedure Initiation - National - FedWire",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PaymentOrderProcedure\": {\n        \"PaymentTransactionInitiatorReference\": {\n            \"ServicingSessionReference\": \"{{$guid}}\",\n            \"TransactionInstanceStatus\": \"PAYMENT_ACTIVATED\",\n            \"PaymentPurpose\": \"\",\n            \"UserID\": \"user1\"\n        },\n        \"PaymentTransactionType\": \"NATIONAL_TRANSFER\",\n        \"EndToEndIdentification\": \"{{transactionOriginatorId}}\",\n        \"PaymentMechanismType\": \"Bank_Fedwire\",\n        \"CurrencyOfTransfer\": \"USD\",\n        \"Amount\": \"250\",\n        \"Currency\": \"USD\",\n        \"ExchangeCurrency\": \"USD\",\n        \"ExchangeRate\": \"1.0\",\n        \"DateType\": \"09-22-2018\",\n        \"PayerReference\": {\n            \"CustomerID\": \"{{debitAccountId}}\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"Checking\"\n        },\n        \"PayeeReference\": {\n            \"CustomerID\": \"{{creditAccountId}}\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"Checking\"\n        },\n        \"PayerBankReference\": {\n            \"BankID\": \"BOFAUS3N\"\n        },\n        \"PayeeBankReference\": {\n            \"BankID\": \"BOFAUS3N\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{host-payments-order-prc-api}}/api/PaymentOrder/Initiate",
+							"protocol": "https",
+							"host": [
+								"{{host-payments-order-prc-api}}"
+							],
+							"path": [
+								"api",
+								"PaymentOrder",
+								"Initiate"
+							]
+						},
+						"description": "Call ping operation with no parameters"
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Order Procedure Initiation - National - ACH",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PaymentOrderProcedure\": {\n        \"PaymentTransactionInitiatorReference\": {\n            \"ServicingSessionReference\": \"{{$guid}}\",\n            \"TransactionInstanceStatus\": \"PAYMENT_ACTIVATED\",\n            \"PaymentPurpose\": \"\",\n            \"UserID\": \"user1\"\n        },\n        \"PaymentTransactionType\": \"NATIONAL_TRANSFER\",\n        \"EndToEndIdentification\": \"{{transactionOriginatorId}}\",\n        \"PaymentMechanismType\": \"Bank_ACH\",\n        \"CurrencyOfTransfer\": \"USD\",\n        \"Amount\": \"250\",\n        \"Currency\": \"USD\",\n        \"ExchangeCurrency\": \"USD\",\n        \"ExchangeRate\": \"1.0\",\n        \"DateType\": \"09-22-2018\",\n        \"PayerReference\": {\n            \"CustomerID\": \"{{debitAccountId}}\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"Checking\"\n        },\n        \"PayeeReference\": {\n            \"CustomerID\": \"{{creditAccountId}}\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"Checking\"\n        },\n        \"PayerBankReference\": {\n            \"BankID\": \"BOFAUS3N\"\n        },\n        \"PayeeBankReference\": {\n            \"BankID\": \"BOFAUS3N\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{host-payments-order-prc-api}}/api/PaymentOrder/Initiate",
+							"protocol": "https",
+							"host": [
+								"{{host-payments-order-prc-api}}"
+							],
+							"path": [
+								"api",
+								"PaymentOrder",
+								"Initiate"
+							]
+						},
+						"description": "Call ping operation with no parameters"
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Order Procedure Initiation - Remittance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PaymentOrderProcedure\": {\n        \"PaymentTransactionInitiatorReference\": {\n            \"ServicingSessionReference\": \"{{$guid}}\",\n            \"TransactionInstanceStatus\": \"PAYMENT_ACTIVATED\",\n            \"PaymentPurpose\": \"CREDIT_TRANSFER\",\n            \"UserID\": \"user1\"\n        },\n        \"PaymentTransactionType\": \"REMITTANCE\",\n        \"EndToEndIdentification\": \"{{transactionOriginatorId}}\",\n        \"PaymentMechanismType\": \"Blockchain\",\n        \"CurrencyOfTransfer\": \"BTC\",\n        \"Amount\": \"200\",\n        \"Currency\": \"USD\",\n        \"ExchangeCurrency\": \"BTC\",\n        \"ExchangeRate\": \"1.0\",\n        \"DateType\": \"09-22-2018\",\n        \"PayerReference\": {\n            \"CustomerID\": \"1FjGWUHrJ3SLbbZLtrk2gXKNxyi29TdNK4CF3q\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"DigitalWallet\"\n        },\n        \"PayeeReference\": {\n            \"CustomerID\": \"1Nnu9sNLTLeRDcUzGhZ1UD5XuWu7BdGA8oYxcA\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"DigitalWallet\"\n        },\n        \"PayerBankReference\": {\n            \"BankID\": \"BlockchainBank\"\n        },\n        \"PayeeBankReference\": {\n            \"BankID\": \"BlockchainBank\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{host-payments-order-prc-api}}/api/PaymentOrder/Initiate",
+							"protocol": "https",
+							"host": [
+								"{{host-payments-order-prc-api}}"
+							],
+							"path": [
+								"api",
+								"PaymentOrder",
+								"Initiate"
+							]
+						},
+						"description": "Call ping operation with no parameters"
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Execution Procedure Initiation - Route failure",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {",
+									"    pm.response.to.have.status(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PaymentOrderProcedure\": {\n        \"PaymentTransactionInitiatorReference\": {\n            \"ServicingSessionReference\": \"{{$guid}}\",\n            \"TransactionInstanceStatus\": \"PAYMENT_ACTIVATED\",\n            \"PaymentPurpose\": \"\",\n            \"UserID\": \"user1\"\n        },\n        \"PaymentTransactionType\": \"INTERNATIONAL_TRANSFER\",\n        \"EndToEndIdentification\": \"12333\",\n        \"PaymentMechanismType\": \"Bank_SWIFT\",\n        \"CurrencyOfTransfer\": \"CAD\",\n        \"Amount\": \"USD 250\",\n        \"Currency\": \"USD\",\n        \"ExchangeCurrency\": \"CAD\",\n        \"ExchangeRate\": \"1.0\",\n        \"DateType\":\"09-22-2018\",\n        \"PayerReference\": {\n            \"CustomerID\": \"{{debitAccountId}}\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"Checking\"\n        },\n        \"PayeeReference\": {\n            \"CustomerID\": \"{{creditAccountId}}\",\n            \"CustomerName\": \"{{$randomFullName}}\",\n            \"AccountType\": \"Checking\"\n        },\n        \"PayerBankReference\": {\n            \"BankID\": \"BOFAUS3N\"\n        },\n        \"PayeeBankReference\": {\n            \"BankID\": \"ROYCCAT2IBO\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{host-payments-order-prc-api}}/api/PaymentOrder/Initiate",
+							"protocol": "https",
+							"host": [
+								"{{host-payments-order-prc-api}}"
+							],
+							"path": [
+								"api",
+								"PaymentOrder",
+								"Initiate"
+							]
+						},
+						"description": "Call ping operation with no parameters"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{accelerator_app_client_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{accelerator_app_client_id}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host-payments-order-prc-api",
+			"value": "fins-payments-order-prc-api-v1-dev.ca-c1.cloudhub.io"
+		},
+		{
+			"key": "host_core_banking_accounts_sys_api",
+			"value": "fins-core-banking-accounts-sys-api-v1-dev.ca-c1.cloudhub.io"
+		},
+		{
+			"key": "host_core_banking_customers_sys_api",
+			"value": "fins-core-banking-customers-sys-api-v1-dev.ca-c1.cloudhub.io"
+		},
+		{
+			"key": "transactionOriginatorId",
+			"value": "714895AAA"
+		},
+		{
+			"key": "customer1Id",
+			"value": ""
+		},
+		{
+			"key": "customer2Id",
+			"value": ""
+		},
+		{
+			"key": "debitAccountId",
+			"value": ""
+		},
+		{
+			"key": "creditAccountId",
+			"value": ""
+		},
+		{
+			"key": "transactionId",
+			"value": ""
+		}
+	]
+}

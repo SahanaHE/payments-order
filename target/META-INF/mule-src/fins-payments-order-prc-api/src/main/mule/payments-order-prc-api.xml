@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="payments-order-prc-main" doc:id="e791013d-9183-4eab-a28e-a9b4f78be1b8">
+        <http:listener path="/api/*" config-ref="payments-order-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="payments-order-config"/>
+		<error-handler ref="error-handler_common" />
+    </flow>
+    <flow name="payments-order-prc-console" doc:id="a395f934-941a-45a8-b1bc-12dc69a04077">
+        <http:listener path="/console/*" config-ref="payments-order-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="payments-order-config"/>
+		<error-handler ref="error-handler_common" />
+    </flow>
+    <flow name="get:\ping:payments-order-config">
+    <http:listener config-ref="payments-order-httpListenerConfig" path="/api/ping">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+		<flow-ref doc:name="ping_get-health" doc:id="ef8d3928-f17d-4a89-b358-ddad5888a619" name="ping_get-health"/>
+    </flow>
+    <flow name="put:\PaymentOrder\(paymentorderId)\Update:payments-order-config" doc:id="2c3884e7-e46f-48fe-85e3-6a0451249086">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="paymentorderId">attributes.uriParams.'paymentorderId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <logger level="INFO" message="put:\PaymentOrder\(paymentorderId)\Update:payments-order-config" />
+    </flow>
+    <flow name="get:\PaymentOrder\(paymentorderId)\ExecutionInitiation\(executioninitiationId)\Retrieve:payments-order-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="paymentorderId">attributes.uriParams.'paymentorderId'</ee:set-variable>
+                <ee:set-variable variableName="executioninitiationId">attributes.uriParams.'executioninitiationId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <logger level="INFO" message="get:\PaymentOrder\(paymentorderId)\ExecutionInitiation\(executioninitiationId)\Retrieve:payments-order-config" />
+    </flow>
+    <flow name="get:\PaymentOrder\(paymentorderId)\OrderConfirmation\(orderconfirmationId)\Retrieve:payments-order-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="paymentorderId">attributes.uriParams.'paymentorderId'</ee:set-variable>
+                <ee:set-variable variableName="orderconfirmationId">attributes.uriParams.'orderconfirmationId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <logger level="INFO" message="get:\PaymentOrder\(paymentorderId)\OrderConfirmation\(orderconfirmationId)\Retrieve:payments-order-config" />
+    </flow>
+    <flow name="get:\PaymentOrder\(paymentorderId)\Retrieve:payments-order-config" doc:id="17143d47-eba4-45b9-88c7-7969511f9877">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="paymentorderId">attributes.uriParams.'paymentorderId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <logger level="INFO" message="get:\PaymentOrder\(paymentorderId)\Retrieve:payments-order-config" />
+    </flow>
+    <flow name="post:\PaymentOrder\Initiate:payments-order-config" doc:id="506c4585-11c9-4bcd-8643-5c2038e75f2e">
+        <logger level="INFO" message="post:\PaymentOrder\Initiate:payments-order-config" />
+		<flow-ref doc:name="payment-order_post-payment-order-procedure" doc:id="88b9c756-ca1b-4dba-a9c8-6a908f5cd395" name="payment-order_post-payment-order-procedure" />
+    </flow>
+    
+</mule>

@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="payments-order-prc-api-test-suite.xml" />
+	<munit:test name="payments-order-prc-mainTest" doc:id="52a961d2-1f72-46c1-b459-1de91e02b4d4" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="acc71d3d-837e-4ed6-8463-b53c99f12c16" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to payments-order-prc-main" doc:id="c2814294-43a2-4250-8343-aae9094d47cb" name="payments-order-prc-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="a49085c6-b015-40bc-ba81-900d215072c5" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="payments-order-prc-consoleTest" doc:id="66d9dd63-e2b3-4337-a59a-60855af6cf07" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="79bf5634-dcfd-496a-b1fb-35320dafb9c7" processor="apikit:console">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to payments-order-prc-console" doc:id="da48e365-a1d1-447b-8742-11eb48bccf45" name="payments-order-prc-console"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="a1be306f-821e-4526-aabc-d9c045abd688" processor="apikit:console">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="payments-order-prc-api-test-suite-get:\ping:payments-order-configTest" doc:id="da057e1e-fb91-4348-9e2a-10c437bdbc9c" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="9cf5bbd5-81f0-4f1b-9e76-65cad9ebaf63" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\ping:payments-order-config" doc:id="ec309e4b-f00c-4fe6-a11e-739782bd7289" name="get:\ping:payments-order-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="1cdf660c-e02c-4515-913e-3e5c3c5942c8" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="payments-order-prc-api-test-suite-put:\PaymentOrder\(paymentorderId)\Update:payments-order-configTest" doc:id="6c09c56b-0127-4381-ac8c-beecafec3207" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="159c1ba3-218b-49f0-b82f-a1a7da740270" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to put:\PaymentOrder\(paymentorderId)\Update:payments-order-config" doc:id="de6a9c13-8a71-4f2a-9103-19e748d9bf9e" name="put:\PaymentOrder\(paymentorderId)\Update:payments-order-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="0bf87da9-95bb-4c5d-a7e9-adf7a5fc1dd3" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="payments-order-prc-api-test-suite-get:\PaymentOrder\(paymentorderId)\ExecutionInitiation\(executioninitiationId)\Retrieve:payments-order-configTest" doc:id="9b09e2bf-9a22-4ba4-b9dc-8a0429ae410d" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="e4edf439-b67a-4b7d-95db-3dd982140e74" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\PaymentOrder\(paymentorderId)\ExecutionInitiation\(executioninitiationId)\Retrieve:payments-order-config" doc:id="f5fd96e6-7f67-4185-bd00-cb601823fd50" name="get:\PaymentOrder\(paymentorderId)\ExecutionInitiation\(executioninitiationId)\Retrieve:payments-order-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="56086050-0178-4778-a312-4f457e2db89a" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="payments-order-prc-api-test-suite-get:\PaymentOrder\(paymentorderId)\OrderConfirmation\(orderconfirmationId)\Retrieve:payments-order-configTest" doc:id="f17d82af-dc95-4835-bb1d-8888b7b2a498" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="de545526-44fc-4ee0-9a3a-db7e2da49225" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\PaymentOrder\(paymentorderId)\OrderConfirmation\(orderconfirmationId)\Retrieve:payments-order-config" doc:id="aa55c406-eb57-4eaf-9c4e-85c6d94679c3" name="get:\PaymentOrder\(paymentorderId)\OrderConfirmation\(orderconfirmationId)\Retrieve:payments-order-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="1770f57d-761a-4adb-a95a-06b0f7bf637b" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="payments-order-prc-api-test-suite-get:\PaymentOrder\(paymentorderId)\Retrieve:payments-order-configTest" doc:id="78b47f1f-afc0-4d20-87e3-ec1fc9085462" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f215c567-1d7c-47e2-bb14-e7ab1872524a" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\PaymentOrder\(paymentorderId)\Retrieve:payments-order-config" doc:id="02d017ef-37f2-4ea9-8188-221019d8de9a" name="get:\PaymentOrder\(paymentorderId)\Retrieve:payments-order-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="e036db72-6aa3-46e6-bc2b-c39b6fda40c4" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments-order-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\PaymentOrder\Initiate:payments-order-configTest" doc:id="d97b2d48-4aee-4eb9-8720-809113f14769" description="Test">
+		<munit:behavior>
+			<munit:set-event doc:name="Set Event" doc:id="02dadc86-8b12-4b3f-a67f-fad1d38ce96d">
+				<munit:payload value="#[output application/json --- readUrl('classpath://payload/paymentorderpayload.dwl')]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="fb61a791-f953-428f-a375-8d10851b56e4" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="19b12096-d3e5-4026-a015-13d57350cc46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/instituteresponse.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="fba0207f-a4aa-4ed5-af49-896f649aa88d" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/paymentexecution.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<flow-ref doc:name="Flow-ref to post:\PaymentOrder\Initiate:payments-order-config" doc:id="6b1fd665-906d-4f61-a039-0b30d43bbee8" name="post:\PaymentOrder\Initiate:payments-order-config" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="4cb54461-df5f-46ee-9dad-cb35e603e719" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\PaymentOrder\Initiate-getRoutes-post-error-api-test-suiteTest" doc:id="64ed6865-145c-4e9e-80d1-3a01c7f744ad" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="5405b20d-edbc-4301-9478-937c6d79279d" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="19b12096-d3e5-4026-a015-13d57350cc46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/instituteresponse.dwl')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="common-error-handler_notification" doc:id="1c051570-3fae-4dc0-b4ff-daa2b43fea27" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="notifications-prc-api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="46380ca4-51b4-475f-80e4-c62ff01370f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="failed bank identification" doc:id="f9e3fda1-e2a1-4f10-9328-831e4c744e61" processor="raise-error">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="failed bank identification" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="28df82cd-4612-48c1-aa95-7b1c4640b60c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="e76c3f95-f2a5-4493-b8c8-2e43481b18b9" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payload/paymentexecutionpayload.dwl')]" />
+			</munit:set-event>
+			<try doc:name="Try" doc:id="9c60a287-7067-4933-8408-d04d99f72837" >
+				<flow-ref doc:name="Flow Reference" doc:id="253d0ae3-0237-437e-88b5-5cc7bb49fb67" name="post:\PaymentOrder\Initiate:payments-order-config"/>
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="01eb26ce-0ecb-4c93-be7c-8e2babb9adf1" type="ANY">
+						<logger level="INFO" doc:name="Logger" doc:id="3a0e4f3f-2ce7-45af-95c5-edb308b89e2a" message="error"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="78a88057-2456-4be7-b6b7-897defbc65f3" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\PaymentOrder\Initiate-get-banks-post-error-api-test-suiteTest1" doc:id="c8447f57-f017-4abb-8668-bbada607d8bb" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="e34958c6-644f-4660-8f86-f7a831f5a363" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="19b12096-d3e5-4026-a015-13d57350cc46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/instituteresponse.dwl')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="common-error-handler_notification" doc:id="39cae864-ded8-42b3-b6b7-94b4ba952c20" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="notifications-prc-api request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="46380ca4-51b4-475f-80e4-c62ff01370f4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="failed bank identification" doc:id="039b5dbc-966e-4e09-b9c6-bd918d9ce4d9" processor="raise-error" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="failed bank identification" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="28df82cd-4612-48c1-aa95-7b1c4640b60c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="39a1ab47-e06a-47b3-9519-ea74c450f05f" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payload/paymentexecutionpayload.dwl')]" />
+			</munit:set-event>
+			<try doc:name="Try" doc:id="aace4a21-7964-4c1b-a8f0-89ef04be9be6" >
+				<flow-ref doc:name="Flow Reference" doc:id="46e92de4-53d5-4f2c-82bf-deacc2e19252" name="post:\PaymentOrder\Initiate:payments-order-config" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="3384638c-97f5-42a2-8807-587859129124" type="ANY" >
+						<logger level="INFO" doc:name="Logger" doc:id="6c6aba0d-bf90-4dff-94eb-383c664f4f04" message="error" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="25fe2dcc-e9f3-4efc-b492-494a121d524c" is="#[MunitTools::notNullValue()]" expression="#[payload]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\PaymentOrder\Initiate:itrabank-national-payments-order-configTest" doc:id="48a57bdb-080d-47ba-acd9-415aa521ab1f" description="Test" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="21a4861e-4dc1-49bd-9058-59a4e006f74b">
+				<munit:payload value="#[output application/json --- readUrl('classpath://payload/paymentorderpayload.dwl')]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="7bf3408b-73dc-46bb-8b3a-0c4e8bd5cadc" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="19b12096-d3e5-4026-a015-13d57350cc46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/instituteresponse.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="ef420fff-9349-48e9-923a-48a22bc5e659" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/intrabanknational.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="2bae7671-edab-47ac-8ece-b0c178ef0f12" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="intra bank national request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="94095b8c-40c3-416d-8b0f-f2bc7d7ed78f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/intrabankresponse.dwl')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\PaymentOrder\Initiate:payments-order-config" doc:id="59b1f2b1-d9f6-4ca9-a590-14aa8c2dde25" name="post:\PaymentOrder\Initiate:payments-order-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="46f1a133-3968-468c-85b2-a5b502027089" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\PaymentOrder\Initiate:default-response-payments-order-configTest" doc:id="165ea585-1708-443f-a40e-fd7a31ea3769" description="Test" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="9be813eb-527a-4de5-8194-50c568e48eb0" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payload/paymentorderpayload.dwl')]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="a316dc3d-05cb-4d51-82cc-686bef3c391e" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="19b12096-d3e5-4026-a015-13d57350cc46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/instituteresponse.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="51a69153-0184-42ad-9d9b-bfc5b4bce52f" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/intrabanknational.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="dba1f2ba-7278-472d-876d-07c881d25367" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/intrabankresponse.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\PaymentOrder\Initiate:payments-order-config" doc:id="9ccc7c56-2868-4953-b3df-95cb204bc427" name="post:\PaymentOrder\Initiate:payments-order-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="189bfc62-1515-4bf8-8b0a-0bd3ec0c9959" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\PaymentOrder\Initiate:intra-bank-international-response-payments-order-configTest" doc:id="de7dbfea-e4f3-4eb4-b03d-c4e9ff3977de" description="Test" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="dbc633e5-e5da-44c1-b9dd-a6d44d9d63d0" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payload/paymentorderpayload.dwl')]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="d4d9c424-4571-4c2f-9d9f-2559a3779052" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="19b12096-d3e5-4026-a015-13d57350cc46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/instituteresponse.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="65204fb5-f64f-4e97-822e-b65378995d9a" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/intrabankinternational.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="4484bc99-d11e-4e68-8e67-473076b10670" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/intrabankinternational.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\PaymentOrder\Initiate:payments-order-config" doc:id="e67195ee-69ad-44fd-8a86-79ad3dfceed7" name="post:\PaymentOrder\Initiate:payments-order-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="deff0f0b-cdcc-472f-853e-aa5f7eddd894" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\PaymentOrder\Initiate:inter-bank-national-response-payments-order-configTest" doc:id="df647d23-bb7f-4a90-ba8a-d195587e0a58" description="Test" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="2f75563d-d471-4af6-ac12-9f88374434e4" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payload/paymentorderpayload.dwl')]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="23637ec0-f3f6-4f51-8db3-9339425466e2" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="19b12096-d3e5-4026-a015-13d57350cc46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/instituteresponse.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="9da8ac52-f0e2-4c5a-942d-b627797b4017" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/interbanknational.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\PaymentOrder\Initiate:payments-order-config" doc:id="1903fff2-5663-406a-9a03-c7d82e67ff43" name="post:\PaymentOrder\Initiate:payments-order-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a1110703-d407-47b7-b83d-cb7f371c07fa" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\PaymentOrder\Initiate:inter-bank-international-response-payments-order-configTest" doc:id="1d97120f-e5ba-46ac-9ddd-d8fefab52bb8" description="Test" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="5e62317e-02eb-4f99-b3be-b05dca2e4921" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payload/paymentorderpayload.dwl')]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="29e6b088-e457-4b2d-87c1-d4647df79cf6" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="19b12096-d3e5-4026-a015-13d57350cc46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/instituteresponse.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="aea46889-3b5b-41c0-ac1d-6dcc31d39b28" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/interbankinternational.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="117a433d-7939-4b3e-a103-9aedac2a889a" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/intrabanknational.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\PaymentOrder\Initiate:payments-order-config" doc:id="2e729863-7cae-4db2-b3a6-c635ab7b65e5" name="post:\PaymentOrder\Initiate:payments-order-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="0b202c55-6d69-436a-a24f-b56c315dac1d" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\PaymentOrder\Initiate:remitances-response-payments-order-configTest3" doc:id="2d59a059-3328-479a-993f-34b71bdf5106" description="Test" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="c2750116-31f4-43be-826e-0b785f3b8c80" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payload/paymentorderpayload.dwl')]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="1b51f151-e855-4605-a2a5-919f77b36023" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="19b12096-d3e5-4026-a015-13d57350cc46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/instituteresponse.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="3ef54531-9f37-413c-85ab-26d73aeeee29" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/remitances.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\PaymentOrder\Initiate:payments-order-config" doc:id="18f3b1b7-92d3-4bc7-b5c9-a66686570106" name="post:\PaymentOrder\Initiate:payments-order-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="dcba5dbb-49bb-4793-a9a5-dab4aef42acc" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\PaymentOrder\Initiate:itrabank-national-error-payments-order-configTest1" doc:id="070da2ef-e2c7-4913-ae0a-ef90b9c14331" description="Test" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="3cf18f45-f0af-413f-90f1-1bdc52b17ce0" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payload/paymentorderpayload.dwl')]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="494fde1d-8d5d-4671-9ede-d2b22cae2411" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="financial institutions request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="19b12096-d3e5-4026-a015-13d57350cc46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/instituteresponse.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="c2c49860-223d-417c-afa1-9880ce35a7a2" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="payments router payment execution request" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0068d83-a580-493c-ac4a-7bbea3283d8d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payment/intrabanknational.dwl')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\PaymentOrder\Initiate:payments-order-config" doc:id="1e355fc9-b890-4638-9de6-d1da7d879b74" name="post:\PaymentOrder\Initiate:payments-order-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="2cc8c913-ddc1-4802-8244-a7c1de7b819d" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
