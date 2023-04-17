@@ -1,7 +1,7 @@
 [
     {
         "id": "092f3a92-7185-11ed-857d-5600043798f5",
-        "name": "Katie Ortiz",
+        "name": "Katie develop",
         "institutionType": "Institution",
         "auditInfo": {
             "createdBy": "fins-financial-institutions-sys-api",
