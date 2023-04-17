@@ -13,7 +13,7 @@
     },
     {
         "id": "27ef4368-ad2d-11ed-857d-5600043798f5",
-        "name": "Tonny ja",
+        "name": "Tonny",
         "institutionType": "Bank",
         "bankCode": "Bank003",
         "headquartersCountry": "US",
